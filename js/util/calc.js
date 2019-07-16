@@ -17,9 +17,9 @@ var Xmin = 0;
 var Ymax = 0;
 var Ymin = 0;
 
-var Umax = 0;
+var Umax = 640;
 var Umin = 0;
-var Vmax = 0;
+var Vmax = 480;
 var Vmin = 0;
 var Sx = 0;
 var Sy = 0;
@@ -43,7 +43,7 @@ var matriz_janela_viewport = (Sx, Sy, Xmin, Umin, Ymax, Vmin) => {
 
 //###################################################
 
-var get_ponto_vista = () => ({ a: 0, b: 0, c: 0 });
+var get_ponto_vista = (a, b, c) => ({ a, b, c });
 
 var get_plano_projecao = (r0, p1, p2, p3) => ({
   r0, //pontoPlano
@@ -53,9 +53,9 @@ var get_plano_projecao = (r0, p1, p2, p3) => ({
 });
 
 var coords_vertice = { x: 0, y: 0, z: 0 };
-var dados_objeto = coordenadas_vertice => ({
+var get_dados_objeto = (coordenadas_vertice, numero_vertices) => ({
   coordenadas_vertice: coordenadas_vertice,
-  numero_vertices: coordenadas_vertice.length,
+  numero_vertices: numero_vertices,
   numero_superficies: 0,
   numero_vertices_por_superficie: 0,
   vertice_determinada_superficie: []
@@ -133,21 +133,21 @@ var calc_matriz_perspectiva = (d, d0, d1, normal, ponto_vista) => {
 };
 
 //Cálculo da Matriz de projeção
-var calc_matriz_projecao = dados_objeto => {
-  let matriz_projecao = [];
+var calc_matriz_projecao = (dados_objeto, matriz_perspectiva) => {
+  let matriz_projecao = [[], [], [], []];
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < dados_objeto.numero_vertices; j++) {
       matriz_projecao[i][j] = 0;
       for (let k = 0; k < 4; k++)
         matriz_projecao[i][j] +=
-          matriz_projecao[i][k] * dados_objeto.coordenadas_vertice[k][j];
+          matriz_perspectiva[i][k] * dados_objeto.coordenadas_vertice[k][j];
     }
   }
   return matriz_projecao;
 };
 //Realiza o cálculo da transformação homogenea
-var calc_transf_homogenea = (dados_objeto, matriz_projecao) => {
-  let matriz_homogenea = [];
+var calc_matriz_homogenea = (dados_objeto, matriz_projecao) => {
+  let matriz_homogenea = [[], [], [], []];
   for (let i = 0; i < dados_objeto.numero_vertices; i++) {
     let valorW = matriz_projecao[3][i];
     for (let j = 0; j < 4; j++) {
@@ -155,6 +155,16 @@ var calc_transf_homogenea = (dados_objeto, matriz_projecao) => {
       if (matriz_homogenea[j][i] == -0) matriz_homogenea[j][i] = 0;
     }
   }
+
+  return matriz_homogenea;
+};
+
+var calc_matriz_cartesiana = matriz_homogenea => {
+  let matriz_cartesiana = [];
+  matriz_cartesiana[0] = matriz_homogenea[0];
+  matriz_cartesiana[1] = matriz_homogenea[1];
+  matriz_cartesiana[2] = matriz_homogenea[3];
+  return matriz_cartesiana;
 };
 
 //Calculo das Coordenadas no Plano de Projeção
@@ -169,6 +179,16 @@ function transformacao_coords_cartesianas(coords_homogeneas) {
 
 function test() {
   console.log("TESTE COMECANDO");
+
+  let dados_objeto = get_dados_objeto(
+    [
+      [0, 1, 1, 0, 0, 1, 1, 0],
+      [0, 0, 0, 0, 1, 1, 1, 1],
+      [0, 0, 1, 1, 1, 1, 0, 0],
+      [1, 1, 1, 1, 1, 1, 1, 1]
+    ],
+    8
+  );
 
   let ponto_vista = get_ponto_vista(0, 0, 5);
   let plano_projecao = get_plano_projecao(
@@ -190,7 +210,15 @@ function test() {
     normal,
     ponto_vista
   );
-  console.log(matriz_perspectiva);
+
+  let matriz_projecao = calc_matriz_projecao(dados_objeto, matriz_perspectiva);
+  let matriz_homogenea = calc_matriz_homogenea(dados_objeto, matriz_projecao);
+
+  console.log("NORMAL", normal);
+  console.log("D", d0, d1, d);
+  console.log("MATRIZ_PERSPECTIVA", matriz_perspectiva);
+  console.log("MATRIZ_PROJECAO", matriz_projecao);
+  console.log("MATRIZ_HOMOGENEA", matriz_homogenea);
 }
 
 test();
