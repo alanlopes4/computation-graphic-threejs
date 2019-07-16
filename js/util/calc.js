@@ -159,6 +159,14 @@ var calc_matriz_homogenea = (dados_objeto, matriz_projecao) => {
   return matriz_homogenea;
 };
 
+var get_coords_cartesianas_reflecao = matriz_homogenea => {
+  let matriz_cartesiana = [];
+  matriz_cartesiana[0] = matriz_homogenea[0];
+  matriz_cartesiana[1] = matriz_homogenea[1].map(v => -1 * e);
+  matriz_cartesiana[2] = matriz_homogenea[3];
+  return matriz_cartesiana;
+};
+
 var calc_matriz_cartesiana = matriz_homogenea => {
   let matriz_cartesiana = [];
   matriz_cartesiana[0] = matriz_homogenea[0];
@@ -167,10 +175,41 @@ var calc_matriz_cartesiana = matriz_homogenea => {
   return matriz_cartesiana;
 };
 
-//Calculo das Coordenadas no Plano de Projeção
-function calc_coords_plano_projecao(matriz_perspectiva, matriz_objeto) {
-  return matriz_perspectiva * matriz_objeto;
-}
+var calc_janela = matriz_cartesiana => {
+  Xmin = Math.min(...matriz_cartesiana[0]);
+  Xmax = Math.max(...matriz_cartesiana[0]);
+  Ymin = Math.min(...matriz_cartesiana[1]);
+  Ymax = Math.max(...matriz_cartesiana[1]);
+};
+
+var transladaOrigemMundo = (dados_objeto, matriz_cartesiana) => {
+  let Rw = Vmax / Umax;
+  let Rv = (Xmax - Xmin) / (Ymax - Ymin);
+
+  if (Rw > Rv) {
+    Vmax = (Umax - Umin) / Rw + Vmin;
+  } else if (Rw < Rv) {
+    Umax = Rw * (Vmax - Vmin) + Umin;
+  }
+  let Sx = (Umax - Umin) / (Xmax - Xmin);
+  let Sy = (Vmax - Vmin) / (Ymax - Ymin);
+  let matriz_translacao = [
+    [Sx, 0, -Xmin * Sx + Umin],
+    [0, Sy, -Ymin * Sy + Vmin],
+    [0, 0, 1]
+  ];
+
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < dados_objeto.numero_vertices; j++) {
+      let aux = 0;
+      for (let k = 0; k < 3; k++) {
+        aux += matriz_translacao[i][k] * matriz_cartesiana[k][j];
+      }
+      matriz_cartesiana[i][j] = aux;
+    }
+  }
+  matriz_cartesiana.pop();
+};
 
 //Transforma as coordenadas homogeneas em coordenadas cartesianas
 function transformacao_coords_cartesianas(coords_homogeneas) {
@@ -219,6 +258,12 @@ function test() {
   console.log("MATRIZ_PERSPECTIVA", matriz_perspectiva);
   console.log("MATRIZ_PROJECAO", matriz_projecao);
   console.log("MATRIZ_HOMOGENEA", matriz_homogenea);
+
+  let matriz_cartesiana = calc_matriz_cartesiana(matriz_homogenea);
+  console.log("MATRIZ_CARTESIANA", matriz_cartesiana);
+  calc_janela(matriz_cartesiana);
+  transladaOrigemMundo(dados_objeto, matriz_cartesiana);
+  console.log("MATRIZ_CARTESIANA2", matriz_cartesiana);
 }
 
 test();
