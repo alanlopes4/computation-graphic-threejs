@@ -23,8 +23,9 @@ body {
 
 .controls{
   display: flex;
+  flex-direction: row;
   padding: 10px;
-  height: 100%;
+  height: 40%;
   background-color: #DCDCDC	;
 }
 
@@ -43,6 +44,22 @@ body {
   justify-content: start;
   max-width: 300px;
 }
+
+.matriz_perspectiva{
+  width: 15%;
+  margin-left: 5px;
+}
+
+.matriz_projecao{
+  width: 25%;
+  margin-left: 5px;
+}
+
+.matriz_homogenea{
+  width: 25%;
+  margin-left: 5px;
+}
+
 
 .btn-update{
   margin-left: 5px;
