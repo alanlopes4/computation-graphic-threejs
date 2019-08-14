@@ -5,7 +5,7 @@ body {
 }
 #scene {
   width: 100%;
-  height: 100%;
+  height: 60%;
   display: block;
 }
 .split {
@@ -13,10 +13,37 @@ body {
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%;
+  height: 60%;
   display: flex;
 }
 .split > div {
   width: 100%;
   height: 100%;
+}
+
+.controls{
+  display: flex;
+  padding: 10px;
+  height: 100%;
+  background-color: #DCDCDC	;
+}
+
+.label{
+  padding-right: 5px;
+}
+
+.ponto-vista{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+.ponto-vista-inputs{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  max-width: 300px;
+}
+
+.btn-update{
+  margin-left: 5px;
 }

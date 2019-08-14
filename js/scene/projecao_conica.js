@@ -2,20 +2,32 @@
 
 /* global THREE, dat */
 
+var geometry;
+var renderer;
+var camera;
+var scene;
+var helper;
+var mesh_cubo;
+var vhn;
+var cameraHelper;
+var gui;
+var controls;
+var controls2;
+
 function main() {
   const canvas = document.querySelector("#scene");
   const view1Elem = document.querySelector("#view1");
   const view2Elem = document.querySelector("#view2");
-  const renderer = new THREE.WebGLRenderer({ canvas });
+  renderer = new THREE.WebGLRenderer({ canvas });
 
   const fov = 45; // campo de visão
   const aspect = 2; // aspect radio
   const near = 5; // distância mínima da câmera chegar no objeto
   const far = 100; //distância máxima da câmera
-  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+  camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   camera.position.set(0, 10, 20); // seta a posição da camera na tela
 
-  const cameraHelper = new THREE.CameraHelper(camera);
+  cameraHelper = new THREE.CameraHelper(camera);
 
   class MinMaxGUIHelper {
     constructor(obj, minProp, maxProp, minDif) {
@@ -43,13 +55,13 @@ function main() {
     }
   }
 
-  const gui = new dat.GUI();
+  gui = new dat.GUI();
   gui.add(camera, "fov", 1, 180);
   const minMaxGUIHelper = new MinMaxGUIHelper(camera, "near", "far", 0.1);
   gui.add(minMaxGUIHelper, "min", 0.1, 50, 0.1).name("near");
   gui.add(minMaxGUIHelper, "max", 0.1, 50, 0.1).name("far");
 
-  const controls = new THREE.OrbitControls(camera, view1Elem);
+  controls = new THREE.OrbitControls(camera, view1Elem);
   controls.target.set(0, 5, 0);
   controls.update();
 
@@ -63,12 +75,12 @@ function main() {
   camera2.position.set(40, 10, 30);
   camera2.lookAt(0, 5, 0);
 
-  const controls2 = new THREE.OrbitControls(camera2, view2Elem);
+  controls2 = new THREE.OrbitControls(camera2, view2Elem);
   controls2.target.set(0, 5, 0);
   controls2.update();
 
   //Cria a CENA
-  const scene = new THREE.Scene();
+  scene = new THREE.Scene();
   scene.background = new THREE.Color("black");
   scene.add(cameraHelper);
 
@@ -90,7 +102,8 @@ function main() {
     const planeMat = new THREE.MeshPhongMaterial({
       map: texture,
       side: THREE.DoubleSide
-    }); //Materia utilizado nos objetos
+    }); 
+    //Materia utilizado nos objetos
     //Representa objetos baseados em malha de polígono triangular
     const mesh = new THREE.Mesh(planeGeo, planeMat);
     mesh.rotation.x = Math.PI * -0.5;
@@ -98,31 +111,81 @@ function main() {
   }
   //CRIAÇÃO DO CUBO
   {
+
+    geometry = new THREE.Geometry();
+    geometry.vertices.push(
+      new THREE.Vector3(-1, -1,  1),  // 0
+      new THREE.Vector3( 4, -1,  1),  // 1
+      new THREE.Vector3(-1,  4,  1),  // 2
+      new THREE.Vector3( 4,  4,  1),  // 3
+      new THREE.Vector3(-1, -1, -4),  // 4
+      new THREE.Vector3( 4, -1, -4),  // 5
+      new THREE.Vector3(-1,  4, -4),  // 6
+      new THREE.Vector3( 4,  4, -4),  // 7
+    );
+
+    geometry.faces.push(
+      // front
+      new THREE.Face3(0, 3, 2),
+      new THREE.Face3(0, 1, 3),
+      // right
+      new THREE.Face3(1, 7, 3),
+      new THREE.Face3(1, 5, 7),
+      // back
+      new THREE.Face3(5, 6, 7),
+      new THREE.Face3(5, 4, 6),
+      // left
+      new THREE.Face3(4, 2, 6),
+      new THREE.Face3(4, 0, 2),
+      // top
+      new THREE.Face3(2, 7, 6),
+      new THREE.Face3(2, 3, 7),
+      // bottom
+      new THREE.Face3(4, 1, 0),
+      new THREE.Face3(4, 5, 1),
+   );
+
+    geometry.faces[ 0].color = geometry.faces[ 1].color = new THREE.Color('red');
+    geometry.faces[ 2].color = geometry.faces[ 3].color = new THREE.Color('yellow');
+    geometry.faces[ 4].color = geometry.faces[ 5].color = new THREE.Color('green');
+    geometry.faces[ 6].color = geometry.faces[ 7].color = new THREE.Color('cyan');
+    geometry.faces[ 8].color = geometry.faces[ 9].color = new THREE.Color('blue');
+    geometry.faces[10].color = geometry.faces[11].color = new THREE.Color('magenta');
+
+    /*geometry.verticesNeedUpdate = true;
+    geometry.elementsNeedUpdate = true;
+    geometry.morphTargetsNeedUpdate = true;
+    geometry.uvsNeedUpdate = true;
+    geometry.normalsNeedUpdate = true;
+    geometry.colorsNeedUpdate = true;
+    geometry.tangentsNeedUpdate = true;*/
+      
     //tamanho do cubo
     const cubeSize = 4;
     //Cria um objeto geométrico do cubo (largura, altura, profundidade)
-    const cubeGeo = new THREE.BoxBufferGeometry(cubeSize, cubeSize, cubeSize);
+    //const cubeGeo = new THREE.BoxBufferGeometry(cubeSize, cubeSize, cubeSize);
     //Material utilizado nos no objeto
-    const cubeMat = new THREE.MeshPhongMaterial({ color: "#8AC" });
-    const mesh = new THREE.Mesh(cubeGeo, cubeMat);
-    mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
-    scene.add(mesh);
-  }
-  //CRIAÇÂO DA ESFERA
-  {
-    //tamanho do raio
-    const sphereRadius = 3;
-    const sphereWidthDivisions = 32;
-    const sphereHeightDivisions = 16;
-    const sphereGeo = new THREE.SphereBufferGeometry(
-      sphereRadius,
-      sphereWidthDivisions,
-      sphereHeightDivisions
-    );
-    const sphereMat = new THREE.MeshPhongMaterial({ color: "#CA8" });
-    const mesh = new THREE.Mesh(sphereGeo, sphereMat);
-    mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
-    scene.add(mesh);
+    //const material = new THREE.MeshBasicMaterial({ color: "#2F4F4F"})
+    //const cubeMat = new THREE.MeshPhongMaterial({ color: "#8AC" });
+    //const mesh = new THREE.Mesh(cubeGeo, cubeMat);
+    const material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors});
+    //geometry = new THREE.BoxGeometry( cubeSize, cubeSize, cubeSize );
+    geometry.verticesNeedUpdate = true;
+    mesh_cubo = new THREE.Mesh(geometry, material);
+    mesh_cubo.position.set(0, 1.1 , 0);
+
+    //helper = new THREE.FaceNormalsHelper(mesh_cubo, 1, 0x00ff00, 2);
+    //mesh.position.set(cubeSize + 4, cubeSize/2 , 0);
+    //vhn = new THREE.VertexNormalsHelper( mesh_cubo, 1, 0x0000FF	 );
+    
+    scene.add(mesh_cubo);
+    //scene.add(helper);
+    //scene.add(vhn);
+
+
+    
+
+    //scene.add(mesh2);
   }
   //Adicionando luz na cena
   {
@@ -147,10 +210,12 @@ function main() {
   }
 
   function setScissorForElement(elem) {
+    //pega as dimensões do canvas
     const canvasRect = canvas.getBoundingClientRect();
+    //pega as dimensões do elemento
     const elemRect = elem.getBoundingClientRect();
 
-    // compute a canvas relative rectangle
+    // Computa o canvas para o tamanho do elemento
     const right = Math.min(elemRect.right, canvasRect.right) - canvasRect.left;
     const left = Math.max(0, elemRect.left - canvasRect.left);
     const bottom =
@@ -160,32 +225,37 @@ function main() {
     const width = Math.min(canvasRect.width, right - left);
     const height = Math.min(canvasRect.height, bottom - top);
 
-    // setup the scissor to only render to that part of the canvas
+    // Configura a tesoura para renderizar apenas essa parte da tela
     const positiveYUpBottom = canvasRect.height - bottom;
     renderer.setScissor(left, positiveYUpBottom, width, height);
     renderer.setViewport(left, positiveYUpBottom, width, height);
 
-    // return the aspect
+    // retorna o aspecto
     return width / height;
   }
 
   function render() {
     resizeRendererToDisplaySize(renderer);
 
-    // turn on the scissor
+    // liga a tesoura 
     renderer.setScissorTest(true);
 
-    // render the original view
+    // renderiza para a visão original
     {
       const aspect = setScissorForElement(view1Elem);
 
-      // adjust the camera for this aspect
+      //console.log("CAMERA_BEFORE", camera);
+      // Ajusta a camera para esse aspecto
       camera.aspect = aspect;
+      //Atualiza a matriz de projeção da camera
+      //Deve ser chamado toda vez que mudar algum parametro
       camera.updateProjectionMatrix();
       cameraHelper.update();
 
       // don't draw the camera helper in the original view
       cameraHelper.visible = false;
+
+      //console.log("CAMERA_AFTER", camera);
 
       scene.background.set(0x000000);
 
@@ -197,7 +267,7 @@ function main() {
     {
       const aspect = setScissorForElement(view2Elem);
 
-      // adjust the camera for this aspect
+      // Ajusta a camera para esse aspecto
       camera2.aspect = aspect;
       camera2.updateProjectionMatrix();
 
@@ -210,9 +280,28 @@ function main() {
     }
 
     requestAnimationFrame(render);
+    updatePontoVista();
+
+    geometry.verticesNeedUpdate = true;
+  }
+
+  function updatePontoVista(){
+    document.getElementById("ponto_vista_x").innerHTML = camera.position.x.toFixed(2);
+    document.getElementById("ponto_vista_y").innerHTML = camera.position.y.toFixed(2);
+    document.getElementById("ponto_vista_z").innerHTML = camera.position.z.toFixed(2);
   }
 
   requestAnimationFrame(render);
+}
+
+
+function atualizarPontoDeVista(){
+  const x = document.getElementById("input_ponto_vista_x").value;
+  const y = document.getElementById("input_ponto_vista_y").value;
+  const z = document.getElementById("input_ponto_vista_z").value;
+  camera.position.set(x, y, z);
+  controls.update();
+
 }
 
 main();
