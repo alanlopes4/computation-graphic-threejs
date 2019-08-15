@@ -62,7 +62,7 @@ function main() {
   gui.add(minMaxGUIHelper, "max", 0.1, 50, 0.1).name("far");
 
   controls = new THREE.OrbitControls(camera, view1Elem);
-  controls.target.set(0, 5, 0);
+  controls.target.set(0, 0, 0);
   controls.update();
 
   //Camera da segunda camera
@@ -73,7 +73,7 @@ function main() {
     500 // far
   );
   camera2.position.set(40, 10, 30);
-  camera2.lookAt(0, 5, 0);
+  camera2.lookAt(0, 0, 0);
 
   controls2 = new THREE.OrbitControls(camera2, view2Elem);
   controls2.target.set(0, 5, 0);
@@ -84,36 +84,12 @@ function main() {
   scene.background = new THREE.Color("black");
   scene.add(cameraHelper);
 
-  //CRIAÇÃO DO CHÃO
-  {
-    const planeSize = 40; //tamanho do plano do chão
-
-    const loader = new THREE.TextureLoader(); //textura das imagens
-    const texture = loader.load(
-      "https://threejsfundamentals.org/threejs/resources/images/checker.png"
-    ); //carrega a textura para o chão
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
-    texture.magFilter = THREE.NearestFilter;
-    const repeats = planeSize / 2;
-    texture.repeat.set(repeats, repeats);
-
-    const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
-    const planeMat = new THREE.MeshPhongMaterial({
-      map: texture,
-      side: THREE.DoubleSide
-    }); 
-    //Materia utilizado nos objetos
-    //Representa objetos baseados em malha de polígono triangular
-    const mesh = new THREE.Mesh(planeGeo, planeMat);
-    mesh.rotation.x = Math.PI * -0.5;
-    scene.add(mesh);
-  }
+  
   //CRIAÇÃO DO CUBO
   {
 
     geometry = new THREE.Geometry();
-    geometry.vertices.push(
+    /*geometry.vertices.push(
       new THREE.Vector3(-1, -1,  1),  // 0
       new THREE.Vector3( 4, -1,  1),  // 1
       new THREE.Vector3(-1,  4,  1),  // 2
@@ -122,9 +98,20 @@ function main() {
       new THREE.Vector3( 4, -1, -4),  // 5
       new THREE.Vector3(-1,  4, -4),  // 6
       new THREE.Vector3( 4,  4, -4),  // 7
+    );*/
+
+    geometry.vertices.push(
+      new THREE.Vector3(0, 0,  0),  // 0
+      new THREE.Vector3(1, 0,  0),  // 1
+      new THREE.Vector3(0, 1,  0),  // 2
+      new THREE.Vector3(1, 1,  0),  // 3
+      new THREE.Vector3(0, 0,  1),  // 4
+      new THREE.Vector3(1, 0,  1),  // 5
+      new THREE.Vector3(0, 1,  1),  // 6
+      new THREE.Vector3(1, 1,  1),  // 7
     );
 
-    geometry.faces.push(
+    /*geometry.faces.push(
       // front
       new THREE.Face3(0, 3, 2),
       new THREE.Face3(0, 1, 3),
@@ -143,7 +130,29 @@ function main() {
       // bottom
       new THREE.Face3(4, 1, 0),
       new THREE.Face3(4, 5, 1),
-   );
+   );*/
+
+
+   geometry.faces.push(
+    // front
+    new THREE.Face3(0, 3, 2),
+    new THREE.Face3(0, 1, 3),
+    // right
+    new THREE.Face3(1, 7, 3),
+    new THREE.Face3(1, 5, 7),
+    // back
+    new THREE.Face3(5, 6, 7),
+    new THREE.Face3(5, 4, 6),
+    // left
+    new THREE.Face3(4, 2, 6),
+    new THREE.Face3(4, 0, 2),
+    // top
+    new THREE.Face3(2, 7, 6),
+    new THREE.Face3(2, 3, 7),
+    // bottom
+    new THREE.Face3(4, 1, 0),
+    new THREE.Face3(4, 5, 1),
+ );
 
     geometry.faces[ 0].color = geometry.faces[ 1].color = new THREE.Color('red');
     geometry.faces[ 2].color = geometry.faces[ 3].color = new THREE.Color('yellow');
@@ -172,7 +181,8 @@ function main() {
     //geometry = new THREE.BoxGeometry( cubeSize, cubeSize, cubeSize );
     geometry.verticesNeedUpdate = true;
     mesh_cubo = new THREE.Mesh(geometry, material);
-    mesh_cubo.position.set(0, 1.1 , 0);
+    mesh_cubo.position.set(0, 0, 0);
+    THREE.GeometryUtils.center( geometry );
 
     //helper = new THREE.FaceNormalsHelper(mesh_cubo, 1, 0x00ff00, 2);
     //mesh.position.set(cubeSize + 4, cubeSize/2 , 0);

@@ -217,7 +217,6 @@ function transformacao_coords_cartesianas(coords_homogeneas) {
 }
 
 function test() {
-  console.log("TESTE COMECANDO");
 
   let dados_objeto = get_dados_objeto(
     [

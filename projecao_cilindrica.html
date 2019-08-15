@@ -7,6 +7,7 @@
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="css/estilo.css" />
   </head>
   <body>
@@ -14,6 +15,45 @@
     <div class="split">
       <div id="view1" tabindex="1"></div>
       <div id="view2" tabindex="2"></div>
+    </div>
+    <div class="controls">
+      <div class="ponto-vista">
+          <div>
+          <label class="label">Ponto de vista:</label>
+          <span>x:</span><span id="ponto_vista_x"></span>
+          <span>y:</span><span id="ponto_vista_y"></span>
+          <span>z:</span><span id="ponto_vista_z"></span>
+        </div>
+          <div class="ponto-vista-inputs">
+            <div>
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">x</span>
+                </div>
+                <input id="input_ponto_vista_x" type="text" class="form-control" >
+              </div>
+            </div>
+            <div>
+              <div class="input-group input-group-sm mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">y</span>
+                  </div>
+                  <input  id="input_ponto_vista_y" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+              </div>
+            </div>
+            <div>
+              <div class="input-group input-group-sm mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">z</span>
+                  </div>
+                  <input id="input_ponto_vista_z" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-success btn-sm btn-update" onclick="atualizarPontoDeVista()">Atualizar</button>
+            </div>
+          </div>
+      </div>
     </div>
     <script src="https://threejsfundamentals.org/threejs/resources/threejs/r105/three.min.js"></script>
     <script src="https://threejsfundamentals.org/threejs/resources/threejs/r105/js/controls/OrbitControls.js"></script>

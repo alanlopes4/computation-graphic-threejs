@@ -2,16 +2,30 @@
 
 /* global THREE, dat */
 
+var geometry;
+var renderer;
+var camera;
+var scene;
+var helper;
+var mesh_cubo;
+var vhn;
+var cameraHelper;
+var gui;
+var controls;
+var controls2;
+
+
+
 function main() {
   const canvas = document.querySelector("#scene");
   const view1Elem = document.querySelector("#view1");
   const view2Elem = document.querySelector("#view2");
-  const renderer = new THREE.WebGLRenderer({ canvas });
+  renderer = new THREE.WebGLRenderer({ canvas });
 
   const size = 1;
   const near = 5;
   const far = 50;
-  const camera = new THREE.OrthographicCamera(
+  camera = new THREE.OrthographicCamera(
     -size,
     size,
     size,
@@ -22,7 +36,7 @@ function main() {
   camera.zoom = 0.2;
   camera.position.set(0, 10, 20);
 
-  const cameraHelper = new THREE.CameraHelper(camera);
+  cameraHelper = new THREE.CameraHelper(camera);
   //Classe auxiliar para ajudar a definir o zoom max e o zoom min
   class MinMaxGUIHelper {
     constructor(obj, minProp, maxProp, minDif) {
@@ -50,15 +64,15 @@ function main() {
     }
   }
 
-  const gui = new dat.GUI();
+  gui = new dat.GUI();
   gui.add(camera, "zoom", 0.01, 1, 0.01).listen();
   const minMaxGUIHelper = new MinMaxGUIHelper(camera, "near", "far", 0.1);
   gui.add(minMaxGUIHelper, "min", 0.1, 50, 0.1).name("near");
   gui.add(minMaxGUIHelper, "max", 0.1, 50, 0.1).name("far");
 
   //Habilitando controles para a camera 1
-  const controls = new THREE.OrbitControls(camera, view1Elem);
-  controls.target.set(0, 5, 0);
+  controls = new THREE.OrbitControls(camera, view1Elem);
+  controls.target.set(0, 0, 0);
   controls.update();
 
   const camera2 = new THREE.PerspectiveCamera(
@@ -70,58 +84,71 @@ function main() {
   camera2.position.set(16, 28, 40);
   camera2.lookAt(0, 5, 0);
 
-  const controls2 = new THREE.OrbitControls(camera2, view2Elem);
+  controls2 = new THREE.OrbitControls(camera2, view2Elem);
   controls2.target.set(0, 5, 0);
   controls2.update();
 
-  const scene = new THREE.Scene();
+  scene = new THREE.Scene();
   scene.background = new THREE.Color("black");
   scene.add(cameraHelper);
 
+ 
   {
-    const planeSize = 40;
-
-    const loader = new THREE.TextureLoader();
-    const texture = loader.load(
-      "https://threejsfundamentals.org/threejs/resources/images/checker.png"
+    geometry = new THREE.Geometry();
+    geometry.vertices.push(
+      new THREE.Vector3(0, 0,  0),  // 0
+      new THREE.Vector3(1, 0,  0),  // 1
+      new THREE.Vector3(0, 1,  0),  // 2
+      new THREE.Vector3(1, 1,  0),  // 3
+      new THREE.Vector3(0, 0,  1),  // 4
+      new THREE.Vector3(1, 0,  1),  // 5
+      new THREE.Vector3(0, 1,  1),  // 6
+      new THREE.Vector3(1, 1,  1),  // 7
     );
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
-    texture.magFilter = THREE.NearestFilter;
-    const repeats = planeSize / 2;
-    texture.repeat.set(repeats, repeats);
 
-    const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
-    const planeMat = new THREE.MeshPhongMaterial({
-      map: texture,
-      side: THREE.DoubleSide
-    });
-    const mesh = new THREE.Mesh(planeGeo, planeMat);
-    mesh.rotation.x = Math.PI * -0.5;
-    scene.add(mesh);
+    geometry.faces.push(
+      // front
+      new THREE.Face3(0, 3, 2),
+      new THREE.Face3(0, 1, 3),
+      // right
+      new THREE.Face3(1, 7, 3),
+      new THREE.Face3(1, 5, 7),
+      // back
+      new THREE.Face3(5, 6, 7),
+      new THREE.Face3(5, 4, 6),
+      // left
+      new THREE.Face3(4, 2, 6),
+      new THREE.Face3(4, 0, 2),
+      // top
+      new THREE.Face3(2, 7, 6),
+      new THREE.Face3(2, 3, 7),
+      // bottom
+      new THREE.Face3(4, 1, 0),
+      new THREE.Face3(4, 5, 1),
+   );
+
+    geometry.faces[ 0].color = geometry.faces[ 1].color = new THREE.Color('red');
+    geometry.faces[ 2].color = geometry.faces[ 3].color = new THREE.Color('yellow');
+    geometry.faces[ 4].color = geometry.faces[ 5].color = new THREE.Color('green');
+    geometry.faces[ 6].color = geometry.faces[ 7].color = new THREE.Color('cyan');
+    geometry.faces[ 8].color = geometry.faces[ 9].color = new THREE.Color('blue');
+    geometry.faces[10].color = geometry.faces[11].color = new THREE.Color('magenta');
+
+
+    //const cubeSize = 4;
+    //const cubeGeo = new THREE.BoxBufferGeometry(cubeSize, cubeSize, cubeSize);
+    //const cubeMat = new THREE.MeshPhongMaterial({ color: "#8AC" });
+    //const mesh = new THREE.Mesh(cubeGeo, cubeMat);
+    const material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors});
+    geometry.verticesNeedUpdate = true;
+    mesh_cubo = new THREE.Mesh(geometry, material);
+    mesh_cubo.position.set(0, 0, 0);
+    THREE.GeometryUtils.center( geometry );
+
+    //mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
+    scene.add(mesh_cubo);
   }
-  {
-    const cubeSize = 4;
-    const cubeGeo = new THREE.BoxBufferGeometry(cubeSize, cubeSize, cubeSize);
-    const cubeMat = new THREE.MeshPhongMaterial({ color: "#8AC" });
-    const mesh = new THREE.Mesh(cubeGeo, cubeMat);
-    mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
-    scene.add(mesh);
-  }
-  {
-    const sphereRadius = 3;
-    const sphereWidthDivisions = 32;
-    const sphereHeightDivisions = 16;
-    const sphereGeo = new THREE.SphereBufferGeometry(
-      sphereRadius,
-      sphereWidthDivisions,
-      sphereHeightDivisions
-    );
-    const sphereMat = new THREE.MeshPhongMaterial({ color: "#CA8" });
-    const mesh = new THREE.Mesh(sphereGeo, sphereMat);
-    mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
-    scene.add(mesh);
-  }
+ 
 
   {
     const color = 0xffffff;
@@ -206,9 +233,28 @@ function main() {
     }
 
     requestAnimationFrame(render);
+    updatePontoVista();
+
+    geometry.verticesNeedUpdate = true;
   }
+
+  function updatePontoVista(){
+    document.getElementById("ponto_vista_x").innerHTML = camera.position.x.toFixed(2);
+    document.getElementById("ponto_vista_y").innerHTML = camera.position.y.toFixed(2);
+    document.getElementById("ponto_vista_z").innerHTML = camera.position.z.toFixed(2);
+  }
+
 
   requestAnimationFrame(render);
 }
 
+
+function atualizarPontoDeVista(){
+  const x = document.getElementById("input_ponto_vista_x").value;
+  const y = document.getElementById("input_ponto_vista_y").value;
+  const z = document.getElementById("input_ponto_vista_z").value;
+  camera.position.set(x, y, z);
+  controls.update();
+
+}
 main();
