@@ -391,6 +391,22 @@ function atualizarVerticesObjeto() {
   geometry.verticesNeedUpdate = true;
 }
 
+function atualizarXminXmax(){
+  Xmin = document.getElementById("xmin").value;
+  Xmax = document.getElementById("xmax").value;
+
+  calcularMatrizes();
+  updateTodosDados();
+}
+
+function atualizarYminYmax(){
+  Ymin = document.getElementById("ymin").value;
+  Ymax = document.getElementById("ymax").value;
+
+  calcularMatrizes();
+  updateTodosDados();
+}
+
 function centralizarObjeto(){
  // THREE.GeometryUtils.center( geometry );
   mesh_cubo.position.set(0, 0, 0);
