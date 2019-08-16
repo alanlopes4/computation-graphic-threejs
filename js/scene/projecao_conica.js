@@ -25,7 +25,7 @@ function main() {
   const near = 5; // distância mínima da câmera chegar no objeto
   const far = 100; //distância máxima da câmera
   camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.set(0, 10, 20); // seta a posição da camera na tela
+  camera.position.set(0, 0, 20); // seta a posição da camera na tela
 
   cameraHelper = new THREE.CameraHelper(camera);
 
@@ -89,16 +89,6 @@ function main() {
   {
 
     geometry = new THREE.Geometry();
-    /*geometry.vertices.push(
-      new THREE.Vector3(-1, -1,  1),  // 0
-      new THREE.Vector3( 4, -1,  1),  // 1
-      new THREE.Vector3(-1,  4,  1),  // 2
-      new THREE.Vector3( 4,  4,  1),  // 3
-      new THREE.Vector3(-1, -1, -4),  // 4
-      new THREE.Vector3( 4, -1, -4),  // 5
-      new THREE.Vector3(-1,  4, -4),  // 6
-      new THREE.Vector3( 4,  4, -4),  // 7
-    );*/
 
     geometry.vertices.push(
       new THREE.Vector3(0, 0,  0),  // 0
@@ -110,27 +100,6 @@ function main() {
       new THREE.Vector3(0, 1,  1),  // 6
       new THREE.Vector3(1, 1,  1),  // 7
     );
-
-    /*geometry.faces.push(
-      // front
-      new THREE.Face3(0, 3, 2),
-      new THREE.Face3(0, 1, 3),
-      // right
-      new THREE.Face3(1, 7, 3),
-      new THREE.Face3(1, 5, 7),
-      // back
-      new THREE.Face3(5, 6, 7),
-      new THREE.Face3(5, 4, 6),
-      // left
-      new THREE.Face3(4, 2, 6),
-      new THREE.Face3(4, 0, 2),
-      // top
-      new THREE.Face3(2, 7, 6),
-      new THREE.Face3(2, 3, 7),
-      // bottom
-      new THREE.Face3(4, 1, 0),
-      new THREE.Face3(4, 5, 1),
-   );*/
 
 
    geometry.faces.push(
@@ -160,14 +129,6 @@ function main() {
     geometry.faces[ 6].color = geometry.faces[ 7].color = new THREE.Color('cyan');
     geometry.faces[ 8].color = geometry.faces[ 9].color = new THREE.Color('blue');
     geometry.faces[10].color = geometry.faces[11].color = new THREE.Color('magenta');
-
-    /*geometry.verticesNeedUpdate = true;
-    geometry.elementsNeedUpdate = true;
-    geometry.morphTargetsNeedUpdate = true;
-    geometry.uvsNeedUpdate = true;
-    geometry.normalsNeedUpdate = true;
-    geometry.colorsNeedUpdate = true;
-    geometry.tangentsNeedUpdate = true;*/
       
     //tamanho do cubo
     const cubeSize = 4;
@@ -290,9 +251,11 @@ function main() {
     }
 
     requestAnimationFrame(render);
-    updatePontoVista();
+    
 
     geometry.verticesNeedUpdate = true;
+    updatePontoVista();
+
   }
 
   function updatePontoVista(){
@@ -304,6 +267,17 @@ function main() {
   requestAnimationFrame(render);
 }
 
+function updateTodosDados(){
+  updateNormal();
+  updateDD0D1();
+  updateMatrizPerspectiva();
+  updateMatrizProjecao();
+  updateMatrizHomogenea();
+  updateMatrizCartesiana();
+  updateMatrizJanelaViewport();
+  updateMatrizDispositivoTruncadas();
+}
+
 
 function atualizarPontoDeVista(){
   const x = document.getElementById("input_ponto_vista_x").value;
@@ -311,7 +285,210 @@ function atualizarPontoDeVista(){
   const z = document.getElementById("input_ponto_vista_z").value;
   camera.position.set(x, y, z);
   controls.update();
+  ponto_vista = get_ponto_vista(x, y, z);
+
+
+  test();
+  updateTodosDados();
+
 
 }
 
+function updateNormal(){
+  document.getElementById("normal").innerHTML = ` x: ${normal.nx} y: ${normal.ny} z: ${normal.nz}`;
+}
+
+function updateDD0D1(){
+  document.getElementById("d0_d1_d").innerHTML = ` d0: ${d0} d1: ${d1} d: ${d}`;
+}
+
+function updateMatrizPerspectiva(){
+  //Linha 0
+  document.getElementById("matrizPerspectiva[0][0]").innerHTML = matriz_perspectiva[0][0].toFixed(2);
+  document.getElementById("matrizPerspectiva[0][1]").innerHTML = matriz_perspectiva[0][1].toFixed(2);
+  document.getElementById("matrizPerspectiva[0][2]").innerHTML = matriz_perspectiva[0][2].toFixed(2);
+  document.getElementById("matrizPerspectiva[0][3]").innerHTML = matriz_perspectiva[0][3].toFixed(2);
+
+  //LINHA1 0 -5 0 0
+  document.getElementById("matrizPerspectiva[1][0]").innerHTML = matriz_perspectiva[1][0].toFixed(2);
+  document.getElementById("matrizPerspectiva[1][1]").innerHTML = matriz_perspectiva[1][1].toFixed(2);
+  document.getElementById("matrizPerspectiva[1][2]").innerHTML = matriz_perspectiva[1][2].toFixed(2);
+  document.getElementById("matrizPerspectiva[1][3]").innerHTML = matriz_perspectiva[1][3].toFixed(2);
+
+  document.getElementById("matrizPerspectiva[2][0]").innerHTML = matriz_perspectiva[2][0].toFixed(2);
+  document.getElementById("matrizPerspectiva[2][1]").innerHTML = matriz_perspectiva[2][1].toFixed(2);
+  document.getElementById("matrizPerspectiva[2][2]").innerHTML = matriz_perspectiva[2][2].toFixed(2);
+  document.getElementById("matrizPerspectiva[2][3]").innerHTML = matriz_perspectiva[2][3].toFixed(2);
+
+  document.getElementById("matrizPerspectiva[3][0]").innerHTML = matriz_perspectiva[3][0].toFixed(2);
+  document.getElementById("matrizPerspectiva[3][1]").innerHTML = matriz_perspectiva[3][1].toFixed(2);
+  document.getElementById("matrizPerspectiva[3][2]").innerHTML = matriz_perspectiva[3][2].toFixed(2);
+  document.getElementById("matrizPerspectiva[3][3]").innerHTML = matriz_perspectiva[3][3].toFixed(2);
+}
+
+function updateMatrizProjecao(){
+  //LINHA -5 0 0 0 -5 0 0 0 
+  document.getElementById("matrizProjecao[0][0]").innerHTML = matriz_projecao[0][0].toFixed(2);
+  document.getElementById("matrizProjecao[0][1]").innerHTML = matriz_projecao[0][1].toFixed(2);
+  document.getElementById("matrizProjecao[0][2]").innerHTML = matriz_projecao[0][2].toFixed(2);
+  document.getElementById("matrizProjecao[0][3]").innerHTML = matriz_projecao[0][3].toFixed(2);
+  document.getElementById("matrizProjecao[0][4]").innerHTML = matriz_projecao[0][4].toFixed(2);
+  document.getElementById("matrizProjecao[0][5]").innerHTML = matriz_projecao[0][5].toFixed(2);
+  document.getElementById("matrizProjecao[0][6]").innerHTML = matriz_projecao[0][6].toFixed(2);
+  document.getElementById("matrizProjecao[0][7]").innerHTML = matriz_projecao[0][7].toFixed(2);
+
+  document.getElementById("matrizProjecao[1][0]").innerHTML = matriz_projecao[1][0].toFixed(2);
+  document.getElementById("matrizProjecao[1][1]").innerHTML = matriz_projecao[1][1].toFixed(2);
+  document.getElementById("matrizProjecao[1][2]").innerHTML = matriz_projecao[1][2].toFixed(2);
+  document.getElementById("matrizProjecao[1][3]").innerHTML = matriz_projecao[1][3].toFixed(2);
+  document.getElementById("matrizProjecao[1][4]").innerHTML = matriz_projecao[1][4].toFixed(2);
+  document.getElementById("matrizProjecao[1][5]").innerHTML = matriz_projecao[1][5].toFixed(2);
+  document.getElementById("matrizProjecao[1][6]").innerHTML = matriz_projecao[1][6].toFixed(2);
+  document.getElementById("matrizProjecao[1][7]").innerHTML = matriz_projecao[1][7].toFixed(2);
+
+  document.getElementById("matrizProjecao[2][0]").innerHTML = matriz_projecao[2][0].toFixed(2);
+  document.getElementById("matrizProjecao[2][1]").innerHTML = matriz_projecao[2][1].toFixed(2);
+  document.getElementById("matrizProjecao[2][2]").innerHTML = matriz_projecao[2][2].toFixed(2);
+  document.getElementById("matrizProjecao[2][3]").innerHTML = matriz_projecao[2][3].toFixed(2);
+  document.getElementById("matrizProjecao[2][4]").innerHTML = matriz_projecao[2][4].toFixed(2);
+  document.getElementById("matrizProjecao[2][5]").innerHTML = matriz_projecao[2][5].toFixed(2);
+  document.getElementById("matrizProjecao[2][6]").innerHTML = matriz_projecao[2][6].toFixed(2);
+  document.getElementById("matrizProjecao[2][7]").innerHTML = matriz_projecao[2][7].toFixed(2);
+
+  document.getElementById("matrizProjecao[3][0]").innerHTML = matriz_projecao[3][0].toFixed(2);
+  document.getElementById("matrizProjecao[3][1]").innerHTML = matriz_projecao[3][1].toFixed(2);
+  document.getElementById("matrizProjecao[3][2]").innerHTML = matriz_projecao[3][2].toFixed(2);
+  document.getElementById("matrizProjecao[3][3]").innerHTML = matriz_projecao[3][3].toFixed(2);
+  document.getElementById("matrizProjecao[3][4]").innerHTML = matriz_projecao[3][4].toFixed(2);
+  document.getElementById("matrizProjecao[3][5]").innerHTML = matriz_projecao[3][5].toFixed(2);
+  document.getElementById("matrizProjecao[3][6]").innerHTML = matriz_projecao[3][6].toFixed(2);
+  document.getElementById("matrizProjecao[3][7]").innerHTML = matriz_projecao[3][7].toFixed(2);
+}
+
+function updateMatrizHomogenea(){
+
+  document.getElementById("matrizHomogenea[0][0]").innerHTML = matriz_homogenea[0][0].toFixed(2);
+  document.getElementById("matrizHomogenea[0][1]").innerHTML = matriz_homogenea[0][1].toFixed(2);
+  document.getElementById("matrizHomogenea[0][2]").innerHTML = matriz_homogenea[0][2].toFixed(2);
+  document.getElementById("matrizHomogenea[0][3]").innerHTML = matriz_homogenea[0][3].toFixed(2);
+  document.getElementById("matrizHomogenea[0][4]").innerHTML = matriz_homogenea[0][4].toFixed(2);
+  document.getElementById("matrizHomogenea[0][5]").innerHTML = matriz_homogenea[0][5].toFixed(2);
+  document.getElementById("matrizHomogenea[0][6]").innerHTML = matriz_homogenea[0][6].toFixed(2);
+  document.getElementById("matrizHomogenea[0][7]").innerHTML = matriz_homogenea[0][7].toFixed(2);
+
+  document.getElementById("matrizHomogenea[1][0]").innerHTML = matriz_homogenea[1][0].toFixed(2);
+  document.getElementById("matrizHomogenea[1][1]").innerHTML = matriz_homogenea[1][1].toFixed(2);
+  document.getElementById("matrizHomogenea[1][2]").innerHTML = matriz_homogenea[1][2].toFixed(2);
+  document.getElementById("matrizHomogenea[1][3]").innerHTML = matriz_homogenea[1][3].toFixed(2);
+  document.getElementById("matrizHomogenea[1][4]").innerHTML = matriz_homogenea[1][4].toFixed(2);
+  document.getElementById("matrizHomogenea[1][5]").innerHTML = matriz_homogenea[1][5].toFixed(2);
+  document.getElementById("matrizHomogenea[1][6]").innerHTML = matriz_homogenea[1][6].toFixed(2);
+  document.getElementById("matrizHomogenea[1][7]").innerHTML = matriz_homogenea[1][7].toFixed(2);
+
+  document.getElementById("matrizHomogenea[2][0]").innerHTML = matriz_homogenea[2][0].toFixed(2);
+  document.getElementById("matrizHomogenea[2][1]").innerHTML = matriz_homogenea[2][1].toFixed(2);
+  document.getElementById("matrizHomogenea[2][2]").innerHTML = matriz_homogenea[2][2].toFixed(2);
+  document.getElementById("matrizHomogenea[2][3]").innerHTML = matriz_homogenea[2][3].toFixed(2);
+  document.getElementById("matrizHomogenea[2][4]").innerHTML = matriz_homogenea[2][4].toFixed(2);
+  document.getElementById("matrizHomogenea[2][5]").innerHTML = matriz_homogenea[2][5].toFixed(2);
+  document.getElementById("matrizHomogenea[2][6]").innerHTML = matriz_homogenea[2][6].toFixed(2);
+  document.getElementById("matrizHomogenea[2][7]").innerHTML = matriz_homogenea[2][7].toFixed(2);
+
+  document.getElementById("matrizHomogenea[3][0]").innerHTML = matriz_homogenea[3][0].toFixed(2);
+  document.getElementById("matrizHomogenea[3][1]").innerHTML = matriz_homogenea[3][1].toFixed(2);
+  document.getElementById("matrizHomogenea[3][2]").innerHTML = matriz_homogenea[3][2].toFixed(2);
+  document.getElementById("matrizHomogenea[3][3]").innerHTML = matriz_homogenea[3][3].toFixed(2);
+  document.getElementById("matrizHomogenea[3][4]").innerHTML = matriz_homogenea[3][4].toFixed(2);
+  document.getElementById("matrizHomogenea[3][5]").innerHTML = matriz_homogenea[3][5].toFixed(2);
+  document.getElementById("matrizHomogenea[3][6]").innerHTML = matriz_homogenea[3][6].toFixed(2);
+  document.getElementById("matrizHomogenea[3][7]").innerHTML = matriz_homogenea[3][7].toFixed(2);
+
+}
+
+function updateMatrizCartesiana(){
+
+  document.getElementById("matrizCartesiana[0][0]").innerHTML = matriz_cartesiana[0][0].toFixed(2);
+  document.getElementById("matrizCartesiana[0][1]").innerHTML = matriz_cartesiana[0][1].toFixed(2);
+  document.getElementById("matrizCartesiana[0][2]").innerHTML = matriz_cartesiana[0][2].toFixed(2);
+  document.getElementById("matrizCartesiana[0][3]").innerHTML = matriz_cartesiana[0][3].toFixed(2);
+  document.getElementById("matrizCartesiana[0][4]").innerHTML = matriz_cartesiana[0][4].toFixed(2);
+  document.getElementById("matrizCartesiana[0][5]").innerHTML = matriz_cartesiana[0][5].toFixed(2);
+  document.getElementById("matrizCartesiana[0][6]").innerHTML = matriz_cartesiana[0][6].toFixed(2);
+  document.getElementById("matrizCartesiana[0][7]").innerHTML = matriz_cartesiana[0][7].toFixed(2);
+
+  document.getElementById("matrizCartesiana[1][0]").innerHTML = matriz_cartesiana[1][0].toFixed(2);
+  document.getElementById("matrizCartesiana[1][1]").innerHTML = matriz_cartesiana[1][1].toFixed(2);
+  document.getElementById("matrizCartesiana[1][2]").innerHTML = matriz_cartesiana[1][2].toFixed(2);
+  document.getElementById("matrizCartesiana[1][3]").innerHTML = matriz_cartesiana[1][3].toFixed(2);
+  document.getElementById("matrizCartesiana[1][4]").innerHTML = matriz_cartesiana[1][4].toFixed(2);
+  document.getElementById("matrizCartesiana[1][5]").innerHTML = matriz_cartesiana[1][5].toFixed(2);
+  document.getElementById("matrizCartesiana[1][6]").innerHTML = matriz_cartesiana[1][6].toFixed(2);
+  document.getElementById("matrizCartesiana[1][7]").innerHTML = matriz_cartesiana[1][7].toFixed(2);
+
+  document.getElementById("matrizCartesiana[2][0]").innerHTML = matriz_cartesiana[2][0].toFixed(2);
+  document.getElementById("matrizCartesiana[2][1]").innerHTML = matriz_cartesiana[2][1].toFixed(2);
+  document.getElementById("matrizCartesiana[2][2]").innerHTML = matriz_cartesiana[2][2].toFixed(2);
+  document.getElementById("matrizCartesiana[2][3]").innerHTML = matriz_cartesiana[2][3].toFixed(2);
+  document.getElementById("matrizCartesiana[2][4]").innerHTML = matriz_cartesiana[2][4].toFixed(2);
+  document.getElementById("matrizCartesiana[2][5]").innerHTML = matriz_cartesiana[2][5].toFixed(2);
+  document.getElementById("matrizCartesiana[2][6]").innerHTML = matriz_cartesiana[2][6].toFixed(2);
+  document.getElementById("matrizCartesiana[2][7]").innerHTML = matriz_cartesiana[2][7].toFixed(2);
+}
+
+function updateMatrizJanelaViewport(){
+  document.getElementById("matrizJanelaViewport[0][0]").innerHTML = matriz_janela_viewport[0][0].toFixed(2);
+  document.getElementById("matrizJanelaViewport[0][1]").innerHTML = matriz_janela_viewport[0][1].toFixed(2);
+  document.getElementById("matrizJanelaViewport[0][2]").innerHTML = matriz_janela_viewport[0][2].toFixed(2);
+ 
+  document.getElementById("matrizJanelaViewport[1][0]").innerHTML = matriz_janela_viewport[1][0].toFixed(2);
+  document.getElementById("matrizJanelaViewport[1][1]").innerHTML = matriz_janela_viewport[1][1].toFixed(2);
+  document.getElementById("matrizJanelaViewport[1][2]").innerHTML = matriz_janela_viewport[1][2].toFixed(2);
+  
+  document.getElementById("matrizJanelaViewport[2][0]").innerHTML = matriz_janela_viewport[2][0].toFixed(2);
+  document.getElementById("matrizJanelaViewport[2][1]").innerHTML = matriz_janela_viewport[2][1].toFixed(2);
+  document.getElementById("matrizJanelaViewport[2][2]").innerHTML = matriz_janela_viewport[2][2].toFixed(2);
+}
+
+function updateMatrizDispositivoTruncadas(){
+
+  document.getElementById("matrizDispositivoTruncadas[0][0]").innerHTML = matriz_coords_dispositivo_truncadas[0][0].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[0][1]").innerHTML = matriz_coords_dispositivo_truncadas[0][1].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[0][2]").innerHTML = matriz_coords_dispositivo_truncadas[0][2].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[0][3]").innerHTML = matriz_coords_dispositivo_truncadas[0][3].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[0][4]").innerHTML = matriz_coords_dispositivo_truncadas[0][4].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[0][5]").innerHTML = matriz_coords_dispositivo_truncadas[0][5].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[0][6]").innerHTML = matriz_coords_dispositivo_truncadas[0][6].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[0][7]").innerHTML = matriz_coords_dispositivo_truncadas[0][7].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[1][0]").innerHTML = matriz_coords_dispositivo_truncadas[1][0].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[1][1]").innerHTML = matriz_coords_dispositivo_truncadas[1][1].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[1][2]").innerHTML = matriz_coords_dispositivo_truncadas[1][2].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[1][3]").innerHTML = matriz_coords_dispositivo_truncadas[1][3].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[1][4]").innerHTML = matriz_coords_dispositivo_truncadas[1][4].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[1][5]").innerHTML = matriz_coords_dispositivo_truncadas[1][5].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[1][6]").innerHTML = matriz_coords_dispositivo_truncadas[1][6].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[1][7]").innerHTML = matriz_coords_dispositivo_truncadas[1][7].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[2][0]").innerHTML = matriz_coords_dispositivo_truncadas[2][0].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[2][1]").innerHTML = matriz_coords_dispositivo_truncadas[2][1].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[2][2]").innerHTML = matriz_coords_dispositivo_truncadas[2][2].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[2][3]").innerHTML = matriz_coords_dispositivo_truncadas[2][3].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[2][4]").innerHTML = matriz_coords_dispositivo_truncadas[2][4].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[2][5]").innerHTML = matriz_coords_dispositivo_truncadas[2][5].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[2][6]").innerHTML = matriz_coords_dispositivo_truncadas[2][6].toFixed(0);
+  document.getElementById("matrizDispositivoTruncadas[2][7]").innerHTML = matriz_coords_dispositivo_truncadas[2][7].toFixed(0);
+}
+
+
+function mostrarMatriz(matriz){
+  console.log(matriz)
+  const matrizes = document.querySelectorAll('.matriz');
+  matrizes.forEach(matriz => {
+    console.log(matriz);
+    matriz.setAttribute("style", "display:none");
+  });
+
+  document.getElementById(matriz).removeAttribute("style");
+  document.getElementById(matriz).setAttribute("style", "display:flex");
+}
+
 main();
+updateTodosDados();

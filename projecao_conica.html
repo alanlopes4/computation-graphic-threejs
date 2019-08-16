@@ -18,7 +18,7 @@
     </div>
     <div class="controls">
       <div class="ponto-vista">
-          <div>
+        <div>
           <label class="label">Ponto de vista:</label>
           <span>x:</span><span id="ponto_vista_x"></span>
           <span>y:</span><span id="ponto_vista_y"></span>
@@ -53,8 +53,32 @@
                 <button type="button" class="btn btn-success btn-sm btn-update" onclick="atualizarPontoDeVista()">Atualizar</button>
             </div>
           </div>
+          <div>
+            <span>Normal:</span><span id="normal"></span>
+          </div>
+          <div>
+            <span id="d0_d1_d"></span>
+          </div>
+          <div>
+            <button type="button" class="btn btn-info btn-sm btn-update" onclick="mostrarMatriz('matriz_perspectiva')">Matriz Perspectiva</button>
+          </div>
+          <div>
+            <button type="button" class="btn btn-info btn-sm btn-update" onclick="mostrarMatriz('matriz_projecao')">Matriz Projeção</button>
+          </div>
+          <div>
+            <button type="button" class="btn btn-info btn-sm btn-update" onclick="mostrarMatriz('matriz_homogenea')">Matriz Homogenea</button>
+          </div>
+          <div>
+            <button type="button" class="btn btn-info btn-sm btn-update" onclick="mostrarMatriz('matriz_cartesiana')">Matriz Cartesiana</button>
+          </div>
+          <div>
+            <button type="button" class="btn btn-info btn-sm btn-update" onclick="mostrarMatriz('matriz_janela_viewport')">Matriz Janela Viewport</button>
+          </div>
+          <div>
+            <button type="button" class="btn btn-info btn-sm btn-update" onclick="mostrarMatriz('matriz_dispositivo_truncadas')">Matriz Dipositivo Truncadas</button>
+          </div>
       </div>
-      <div class="matriz_perspectiva">
+      <div id="matriz_perspectiva" class="matriz matriz_perspectiva">
           <table class="table table-bordered table-dark">
             <thead>
               <tr>
@@ -63,33 +87,33 @@
             </thead>
               <tbody>
                 <tr>
-                  <td>-5</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td id="matrizPerspectiva[0][0]"></td>
+                  <td id="matrizPerspectiva[0][1]"></td>
+                  <td id="matrizPerspectiva[0][2]"></td>
+                  <td id="matrizPerspectiva[0][3]"></td>
                 </tr>
                 <tr>
-                    <td>0</td>
-                    <td>-5</td>
-                    <td>0</td>
-                    <td>0</td>
+                    <td id="matrizPerspectiva[1][0]"></td>
+                    <td id="matrizPerspectiva[1][1]"></td>
+                    <td id="matrizPerspectiva[1][2]"></td>
+                    <td id="matrizPerspectiva[1][3]"></td>
                 </tr>
                 <tr>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
+                    <td id="matrizPerspectiva[2][0]"></td>
+                    <td id="matrizPerspectiva[2][1]"></td>
+                    <td id="matrizPerspectiva[2][2]"></td>
+                    <td id="matrizPerspectiva[2][3]"></td>
                 </tr>
                 <tr>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>1</td>
-                  <td>-5</td>
+                  <td id="matrizPerspectiva[3][0]"></td>
+                  <td id="matrizPerspectiva[3][1]"></td>
+                  <td id="matrizPerspectiva[3][2]"></td>
+                  <td id="matrizPerspectiva[3][3]"></td>
                   </tr>
               </tbody>
             </table>
       </div>
-      <div class="matriz_projecao">
+      <div id="matriz_projecao" class="matriz matriz_projecao">
           <table class="table table-bordered table-dark">
             <thead>
               <tr>
@@ -98,49 +122,49 @@
             </thead>
               <tbody>
                 <tr>
-                  <td>-5</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>-5</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td id="matrizProjecao[0][0]"></td>
+                  <td id="matrizProjecao[0][1]"></td>
+                  <td id="matrizProjecao[0][2]"></td>
+                  <td id="matrizProjecao[0][3]"></td>
+                  <td id="matrizProjecao[0][4]"></td>
+                  <td id="matrizProjecao[0][5]"></td>
+                  <td id="matrizProjecao[0][6]"></td>
+                  <td id="matrizProjecao[0][7]"></td>
                 </tr>
                 <tr>
-                    <td>0</td>
-                    <td>-5</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>-5</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
+                  <td id="matrizProjecao[1][0]"></td>
+                  <td id="matrizProjecao[1][1]"></td>
+                  <td id="matrizProjecao[1][2]"></td>
+                  <td id="matrizProjecao[1][3]"></td>
+                  <td id="matrizProjecao[1][4]"></td>
+                  <td id="matrizProjecao[1][5]"></td>
+                  <td id="matrizProjecao[1][6]"></td>
+                  <td id="matrizProjecao[1][7]"></td>
                 </tr>
                 <tr>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>-5</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
+                  <td id="matrizProjecao[2][0]"></td>
+                  <td id="matrizProjecao[2][1]"></td>
+                  <td id="matrizProjecao[2][2]"></td>
+                  <td id="matrizProjecao[2][3]"></td>
+                  <td id="matrizProjecao[2][4]"></td>
+                  <td id="matrizProjecao[2][5]"></td>
+                  <td id="matrizProjecao[2][6]"></td>
+                  <td id="matrizProjecao[2][7]"></td>
                 </tr>
                 <tr>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>1</td>
-                  <td>-5</td>
-                  <td>-5</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td id="matrizProjecao[3][0]"></td>
+                  <td id="matrizProjecao[3][1]"></td>
+                  <td id="matrizProjecao[3][2]"></td>
+                  <td id="matrizProjecao[3][3]"></td>
+                  <td id="matrizProjecao[3][4]"></td>
+                  <td id="matrizProjecao[3][5]"></td>
+                  <td id="matrizProjecao[3][6]"></td>
+                  <td id="matrizProjecao[3][7]"></td>
                   </tr>
               </tbody>
             </table>
       </div>
-      <div class="matriz_homogenea">
+      <div id="matriz_homogenea" class="matriz matriz_homogenea">
           <table class="table table-bordered table-dark">
             <thead>
               <tr>
@@ -149,48 +173,156 @@
             </thead>
               <tbody>
                 <tr>
-                  <td>-5</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>-5</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td id="matrizHomogenea[0][0]"></td>
+                  <td id="matrizHomogenea[0][1]"></td>
+                  <td id="matrizHomogenea[0][2]"></td>
+                  <td id="matrizHomogenea[0][3]"></td>
+                  <td id="matrizHomogenea[0][4]"></td>
+                  <td id="matrizHomogenea[0][5]"></td>
+                  <td id="matrizHomogenea[0][6]"></td>
+                  <td id="matrizHomogenea[0][7]"></td>
                 </tr>
                 <tr>
-                    <td>0</td>
-                    <td>-5</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>-5</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
+                  <td id="matrizHomogenea[1][0]"></td>
+                  <td id="matrizHomogenea[1][1]"></td>
+                  <td id="matrizHomogenea[1][2]"></td>
+                  <td id="matrizHomogenea[1][3]"></td>
+                  <td id="matrizHomogenea[1][4]"></td>
+                  <td id="matrizHomogenea[1][5]"></td>
+                  <td id="matrizHomogenea[1][6]"></td>
+                  <td id="matrizHomogenea[1][7]"></td>
                 </tr>
                 <tr>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>-5</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
+                  <td id="matrizHomogenea[2][0]"></td>
+                  <td id="matrizHomogenea[2][1]"></td>
+                  <td id="matrizHomogenea[2][2]"></td>
+                  <td id="matrizHomogenea[2][3]"></td>
+                  <td id="matrizHomogenea[2][4]"></td>
+                  <td id="matrizHomogenea[2][5]"></td>
+                  <td id="matrizHomogenea[2][6]"></td>
+                  <td id="matrizHomogenea[2][7]"></td>
                 </tr>
                 <tr>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>1</td>
-                  <td>-5</td>
-                  <td>-5</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
-                  </tr>
+                  <td id="matrizHomogenea[3][0]"></td>
+                  <td id="matrizHomogenea[3][1]"></td>
+                  <td id="matrizHomogenea[3][2]"></td>
+                  <td id="matrizHomogenea[3][3]"></td>
+                  <td id="matrizHomogenea[3][4]"></td>
+                  <td id="matrizHomogenea[3][5]"></td>
+                  <td id="matrizHomogenea[3][6]"></td>
+                  <td id="matrizHomogenea[3][7]"></td>
+                </tr>
               </tbody>
             </table>
       </div>
+      <div id="matriz_cartesiana" class="matriz matriz_cartesiana">
+        <table class="table table-bordered table-dark">
+          <thead>
+            <tr>
+              <th colspan="8">Matriz Cartesiana</th>
+            </tr>
+          </thead>
+            <tbody>
+              <tr>
+                <td id="matrizCartesiana[0][0]"></td>
+                <td id="matrizCartesiana[0][1]"></td>
+                <td id="matrizCartesiana[0][2]"></td>
+                <td id="matrizCartesiana[0][3]"></td>
+                <td id="matrizCartesiana[0][4]"></td>
+                <td id="matrizCartesiana[0][5]"></td>
+                <td id="matrizCartesiana[0][6]"></td>
+                <td id="matrizCartesiana[0][7]"></td>
+              </tr>
+              <tr>
+                <td id="matrizCartesiana[1][0]"></td>
+                <td id="matrizCartesiana[1][1]"></td>
+                <td id="matrizCartesiana[1][2]"></td>
+                <td id="matrizCartesiana[1][3]"></td>
+                <td id="matrizCartesiana[1][4]"></td>
+                <td id="matrizCartesiana[1][5]"></td>
+                <td id="matrizCartesiana[1][6]"></td>
+                <td id="matrizCartesiana[1][7]"></td>
+              </tr>
+              <tr>
+                <td id="matrizCartesiana[2][0]"></td>
+                <td id="matrizCartesiana[2][1]"></td>
+                <td id="matrizCartesiana[2][2]"></td>
+                <td id="matrizCartesiana[2][3]"></td>
+                <td id="matrizCartesiana[2][4]"></td>
+                <td id="matrizCartesiana[2][5]"></td>
+                <td id="matrizCartesiana[2][6]"></td>
+                <td id="matrizCartesiana[2][7]"></td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <div id="matriz_janela_viewport" class="matriz matriz_janela_viewport">
+      <table class="table table-bordered table-dark">
+        <thead>
+          <tr>
+            <th colspan="8">Matriz Janela Viewport</th>
+          </tr>
+        </thead>
+          <tbody>
+            <tr>
+              <td id="matrizJanelaViewport[0][0]"></td>
+              <td id="matrizJanelaViewport[0][1]"></td>
+              <td id="matrizJanelaViewport[0][2]"></td>
+            </tr>
+            <tr>
+              <td id="matrizJanelaViewport[1][0]"></td>
+              <td id="matrizJanelaViewport[1][1]"></td>
+              <td id="matrizJanelaViewport[1][2]"></td>
+            </tr>
+            <tr>
+              <td id="matrizJanelaViewport[2][0]"></td>
+              <td id="matrizJanelaViewport[2][1]"></td>
+              <td id="matrizJanelaViewport[2][2]"></td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <div id="matriz_dispositivo_truncadas" class="matriz matriz_dispositivo_truncadas">
+      <table class="table table-bordered table-dark">
+        <thead>
+          <tr>
+            <th colspan="8">Matriz Coordenadas Dispositivo Truncadas</th>
+          </tr>
+        </thead>
+          <tbody>
+            <tr>
+              <td id="matrizDispositivoTruncadas[0][0]"></td>
+              <td id="matrizDispositivoTruncadas[0][1]"></td>
+              <td id="matrizDispositivoTruncadas[0][2]"></td>
+              <td id="matrizDispositivoTruncadas[0][3]"></td>
+              <td id="matrizDispositivoTruncadas[0][4]"></td>
+              <td id="matrizDispositivoTruncadas[0][5]"></td>
+              <td id="matrizDispositivoTruncadas[0][6]"></td>
+              <td id="matrizDispositivoTruncadas[0][7]"></td>
+            </tr>
+            <tr>
+              <td id="matrizDispositivoTruncadas[1][0]"></td>
+              <td id="matrizDispositivoTruncadas[1][1]"></td>
+              <td id="matrizDispositivoTruncadas[1][2]"></td>
+              <td id="matrizDispositivoTruncadas[1][3]"></td>
+              <td id="matrizDispositivoTruncadas[1][4]"></td>
+              <td id="matrizDispositivoTruncadas[1][5]"></td>
+              <td id="matrizDispositivoTruncadas[1][6]"></td>
+              <td id="matrizDispositivoTruncadas[1][7]"></td>
+            </tr>
+            <tr>
+              <td id="matrizDispositivoTruncadas[2][0]"></td>
+              <td id="matrizDispositivoTruncadas[2][1]"></td>
+              <td id="matrizDispositivoTruncadas[2][2]"></td>
+              <td id="matrizDispositivoTruncadas[2][3]"></td>
+              <td id="matrizDispositivoTruncadas[2][4]"></td>
+              <td id="matrizDispositivoTruncadas[2][5]"></td>
+              <td id="matrizDispositivoTruncadas[2][6]"></td>
+              <td id="matrizDispositivoTruncadas[2][7]"></td>
+            </tr>
+          </tbody>
+        </table>
+  </div>
     </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -199,6 +331,7 @@
     <script src="https://threejsfundamentals.org/threejs/resources/threejs/r105/three.min.js"></script>
     <script src="https://threejsfundamentals.org/threejs/resources/threejs/r105/js/controls/OrbitControls.js"></script>
     <script src="https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.min.js"></script>
+    <script src="js/util/calc.js"></script>
     <script src="js/scene/projecao_conica.js"></script>
   </body>
 </html>

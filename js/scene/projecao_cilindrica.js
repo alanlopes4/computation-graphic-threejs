@@ -34,7 +34,7 @@ function main() {
     far
   );
   camera.zoom = 0.2;
-  camera.position.set(0, 10, 20);
+  camera.position.set(0, 0, 20);
 
   cameraHelper = new THREE.CameraHelper(camera);
   //Classe auxiliar para ajudar a definir o zoom max e o zoom min
@@ -243,8 +243,6 @@ function main() {
     document.getElementById("ponto_vista_y").innerHTML = camera.position.y.toFixed(2);
     document.getElementById("ponto_vista_z").innerHTML = camera.position.z.toFixed(2);
   }
-
-
   requestAnimationFrame(render);
 }
 
@@ -255,6 +253,8 @@ function atualizarPontoDeVista(){
   const z = document.getElementById("input_ponto_vista_z").value;
   camera.position.set(x, y, z);
   controls.update();
-
 }
+
+
+
 main();

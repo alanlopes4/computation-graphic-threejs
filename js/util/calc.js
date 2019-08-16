@@ -9,38 +9,33 @@ var mobj_cubo = {
   v8: []
 };
 
-var ponto = { x: 0, y: 0, z: 0 };
-var dispositivo = { resH: 0, resV: 0 };
+var dispositivo = { resH: 32, resV: 64 };
 
 var Xmax = 0;
 var Xmin = 0;
 var Ymax = 0;
 var Ymin = 0;
 
-var Umax = 640;
+var Umax = 32; //640;
 var Umin = 0;
-var Vmax = 480;
+var Vmax = 24;//480;
 var Vmin = 0;
 var Sx = 0;
 var Sy = 0;
 
-//Realiza os cálculos da janela viewport
-var matriz_janela_viewport = (Sx, Sy, Xmin, Umin, Ymax, Vmin) => {
-  var matriz = [];
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-      if (i == 0) {
-        if (j == 0) matrix[i][j] = Sx;
-        else if (j == 2) matrix[i][j] = Sx * Xmin + Umin;
-      } else if (i == 1) {
-        if (j == 1) matrix[i][j] = -1 * Sy;
-        else if (j == 2) matrix[i][j] = Sy * Ymax + Vmin;
-      } else matrix[i][j] = 0;
-    }
-  }
-  return matriz;
-};
-
+var dados_objeto;
+var ponto_vista;
+var plano_projecao;
+var normal;
+var d;
+var d0;
+var d1;
+var matriz_perspectiva;
+var matriz_projecao;
+var matriz_homogenea;
+var matriz_cartesiana;
+var matriz_janela_viewport;
+var matriz_coords_dispositivo_truncadas;
 //###################################################
 
 var get_ponto_vista = (a, b, c) => ({ a, b, c });
@@ -155,7 +150,6 @@ var calc_matriz_homogenea = (dados_objeto, matriz_projecao) => {
       if (matriz_homogenea[j][i] == -0) matriz_homogenea[j][i] = 0;
     }
   }
-
   return matriz_homogenea;
 };
 
@@ -181,6 +175,18 @@ var calc_janela = matriz_cartesiana => {
   Ymin = Math.min(...matriz_cartesiana[1]);
   Ymax = Math.max(...matriz_cartesiana[1]);
 };
+
+var calc_matriz_janela_viewport = () => {
+  let matriz_janela_viewport = [[], [], [], []];
+
+  Sx = (Umax-Umin)/(Xmax-Xmin);
+  Sy = (Vmax-Vmin)/(Ymax-Ymin);
+
+  matriz_janela_viewport[0] = [Sx, 0 , Sx*Xmin+Umin];
+  matriz_janela_viewport[1] = [0, -Sy, Sy*Ymax+Vmin];
+  matriz_janela_viewport[2] = [0, 0, 0];
+  return matriz_janela_viewport;
+}
 
 var transladaOrigemMundo = (dados_objeto, matriz_cartesiana) => {
   let Rw = Vmax / Umax;
@@ -216,9 +222,24 @@ function transformacao_coords_cartesianas(coords_homogeneas) {
   return coords_homogeneas.map(v => v, coords_homogeneas.w);
 }
 
+function calc_coords_dispositivo_truncadas(){
+  let matriz_dispositivo_truncadas = [[], [], []];
+
+  for(let i =0; i < 3; i++){
+    for(let j=0; j < 8;j++){
+      matriz_dispositivo_truncadas[i][j] = matriz_janela_viewport[i][0]*matriz_cartesiana[0][j] 
+                                      + matriz_janela_viewport[i][1]*matriz_cartesiana[1][j] 
+                                      + matriz_janela_viewport[i][2]*matriz_cartesiana[2][j];
+    }
+  }
+  return matriz_dispositivo_truncadas;
+}
+
+ponto_vista = get_ponto_vista(0, 0, 5);
+
 function test() {
 
-  let dados_objeto = get_dados_objeto(
+  dados_objeto = get_dados_objeto(
     [
       [0, 1, 1, 0, 0, 1, 1, 0],
       [0, 0, 0, 0, 1, 1, 1, 1],
@@ -228,20 +249,20 @@ function test() {
     8
   );
 
-  let ponto_vista = get_ponto_vista(0, 0, 5);
-  let plano_projecao = get_plano_projecao(
+  
+  plano_projecao = get_plano_projecao(
     { x: 0, y: 0, z: 0 }, //r0
     { x: 1, y: 0, z: 0 }, //p1
     { x: 0, y: 0, z: 0 }, //p2
     { x: 0, y: 1, z: 0 } //p3
   );
 
-  let normal = calc_vet_normal(plano_projecao);
-  let d0 = calc_d0(normal, plano_projecao);
-  let d1 = calc_d1(normal, ponto_vista);
-  let d = calc_d(d0, d1);
+  normal = calc_vet_normal(plano_projecao);
+  d0 = calc_d0(normal, plano_projecao);
+  d1 = calc_d1(normal, ponto_vista);
+  d = calc_d(d0, d1);
 
-  let matriz_perspectiva = calc_matriz_perspectiva(
+  matriz_perspectiva = calc_matriz_perspectiva(
     d,
     d0,
     d1,
@@ -249,8 +270,8 @@ function test() {
     ponto_vista
   );
 
-  let matriz_projecao = calc_matriz_projecao(dados_objeto, matriz_perspectiva);
-  let matriz_homogenea = calc_matriz_homogenea(dados_objeto, matriz_projecao);
+  matriz_projecao = calc_matriz_projecao(dados_objeto, matriz_perspectiva);
+  matriz_homogenea = calc_matriz_homogenea(dados_objeto, matriz_projecao);
 
   console.log("NORMAL", normal);
   console.log("D", d0, d1, d);
@@ -258,11 +279,23 @@ function test() {
   console.log("MATRIZ_PROJECAO", matriz_projecao);
   console.log("MATRIZ_HOMOGENEA", matriz_homogenea);
 
-  let matriz_cartesiana = calc_matriz_cartesiana(matriz_homogenea);
+  //passando a copia, pq array é passado por referencia
+  let copyMatrizHomogenea = [[], [], [], []];
+  for(let i = 0; i <4; i++)
+    for (let j = 0; j < dados_objeto.numero_vertices; j++) 
+      copyMatrizHomogenea[i][j] = matriz_homogenea[i][j];
+    
+ 
+  matriz_cartesiana = calc_matriz_cartesiana(copyMatrizHomogenea);
+
   console.log("MATRIZ_CARTESIANA", matriz_cartesiana);
   calc_janela(matriz_cartesiana);
-  transladaOrigemMundo(dados_objeto, matriz_cartesiana);
+  matriz_janela_viewport = calc_matriz_janela_viewport();
+  matriz_janela_viewport2 = calc_matriz_janela_viewport(Sx, Sy, Xmin, Umin, Ymax, Vmin);
+  //transladaOrigemMundo(dados_objeto, matriz_cartesiana);
   console.log("MATRIZ_CARTESIANA2", matriz_cartesiana);
+
+  matriz_coords_dispositivo_truncadas = calc_coords_dispositivo_truncadas();
 }
 
 test();
