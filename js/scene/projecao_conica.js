@@ -236,7 +236,6 @@ function main() {
     }
 
     requestAnimationFrame(render);
-    
 
     geometry.verticesNeedUpdate = true;
     updatePontoVista();
