@@ -188,33 +188,46 @@ var calc_matriz_janela_viewport = () => {
   return matriz_janela_viewport;
 }
 
-var transladaOrigemMundo = (dados_objeto, matriz_cartesiana) => {
+var calc_tjanela_viewport = () => {
   let Rw = Vmax / Umax;
   let Rv = (Xmax - Xmin) / (Ymax - Ymin);
+  let tjanela_viewport;
 
+  Sx = (Umax - Umin) / (Xmax - Xmin);
+  Sy = (Vmax - Vmin) / (Ymax - Ymin);
+  
   if (Rw > Rv) {
-    Vmax = (Umax - Umin) / Rw + Vmin;
-  } else if (Rw < Rv) {
-    Umax = Rw * (Vmax - Vmin) + Umin;
-  }
-  let Sx = (Umax - Umin) / (Xmax - Xmin);
-  let Sy = (Vmax - Vmin) / (Ymax - Ymin);
-  let matriz_translacao = [
-    [Sx, 0, -Xmin * Sx + Umin],
-    [0, Sy, -Ymin * Sy + Vmin],
-    [0, 0, 1]
-  ];
+   let UmaxNovo = Rw * (Vmax - Vmin) + Umin;
+   
+    Sx = (Umax - Umin) / (Xmax - Xmin);
+    Sy = (Vmax - Vmin) / (Ymax - Ymin);
+   
+    tjanela_viewport = [
+      [Sx, 0, -Sx*Xmin + Umax/2 - UmaxNovo/2 + Umin],
+      [0, -Sy, Sy*Ymax + Vmin],
+      [0, 0, 1]
+    ];
 
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < dados_objeto.numero_vertices; j++) {
-      let aux = 0;
-      for (let k = 0; k < 3; k++) {
-        aux += matriz_translacao[i][k] * matriz_cartesiana[k][j];
-      }
-      matriz_cartesiana[i][j] = aux;
-    }
+  } else if (Rw < Rv) {
+    let VmaxNovo = (Umax - Umin) / Rw + Vmin;
+
+    tjanela_viewport = [
+      [Sx, 0, Umin-Sx*Xmin],
+      [0, -Sy, Sy*Ymax + Vmax/2 - VmaxNovo/2 + Vmin],
+      [0, 0, 1]
+    ];
+
+  }else {
+    tjanela_viewport = [
+      [Sx, 0, Umin - Sx*Xmin],
+      [0, -Sy, Sy*Ymax + Vmin],
+      [0, 0, 1]
+    ];
   }
-  matriz_cartesiana.pop();
+
+  return tjanela_viewport;
+
+
 };
 
 //Transforma as coordenadas homogeneas em coordenadas cartesianas
@@ -290,8 +303,7 @@ function test() {
 
   console.log("MATRIZ_CARTESIANA", matriz_cartesiana);
   calc_janela(matriz_cartesiana);
-  matriz_janela_viewport = calc_matriz_janela_viewport();
-  matriz_janela_viewport2 = calc_matriz_janela_viewport(Sx, Sy, Xmin, Umin, Ymax, Vmin);
+  matriz_janela_viewport = calc_tjanela_viewport();
   //transladaOrigemMundo(dados_objeto, matriz_cartesiana);
   console.log("MATRIZ_CARTESIANA2", matriz_cartesiana);
 
