@@ -20,74 +20,129 @@
     <div class="controls">
       <div class="ponto-vista">
         <div>
-          <label class="label">Ponto de vista:</label>
-          <span>x:</span><span id="ponto_vista_x"></span>
-          <span>y:</span><span id="ponto_vista_y"></span>
-          <span>z:</span><span id="ponto_vista_z"></span>
+          <strong class="label">Ponto de vista:</strong>
+          <strong>x:</strong><strong id="ponto_vista_x"></strong>
+          <strong>y:</strong><strong id="ponto_vista_y"></strong>
+          <strong>z:</strong><strong id="ponto_vista_z"></strong>
         </div>
+        <div>
+            <strong>Normal:</strong><strong id="normal"></strong>
+        </div>
+        <div>
+            <strong id="d0_d1_d"></strong>
+        </div>
+        <strong>Ponto de Vista</strong>
           <div class="ponto-vista-inputs">
             <div>
-              <div class="input-group input-group-sm mb-3">
+              <div class="input-group input-group-sm mb-1">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-sm">x</span>
+                  <span class="input-group-text" style="background-color: red; color: white;" id="inputGroup-sizing-sm">x</span>
                 </div>
                 <input id="input_ponto_vista_x" type="text" class="form-control" >
               </div>
             </div>
             <div>
-              <div class="input-group input-group-sm mb-3">
+              <div class="input-group input-group-sm mb-1">
                   <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">y</span>
+                    <span class="input-group-text" style="background-color: yellow; color: black;" id="inputGroup-sizing-sm">y</span>
                   </div>
                   <input  id="input_ponto_vista_y" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
               </div>
             </div>
             <div>
-              <div class="input-group input-group-sm mb-3">
+              <div class="input-group input-group-sm mb-1">
                   <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">z</span>
+                    <span class="input-group-text" style="background-color: blue; color: white;" id="inputGroup-sizing-sm">z</span>
                   </div>
                   <input id="input_ponto_vista_z" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                 </div>
             </div>
             <div>
-                <button type="button" class="btn btn-success btn-sm btn-update" onclick="atualizarPontoDeVista()">Atualizar</button>
+                <button type="button" class="btn btn-success btn-sm btn-update" onclick="atualizarPontoDeVista()"><i class="fa fa-refresh"></i></button>
             </div>
           </div>
-          <div>
-            <span>Normal:</span><span id="normal"></span>
+          <strong>Transladar</strong>
+          <div class="ponto-vista-inputs">
+            <div>
+              <div class="input-group input-group-sm mb-1">
+                <div class="input-group-prepend ">
+                  <span class="input-group-text" style="background-color: red; color: white;" id="inputGroup-sizing-sm">x</span>
+                </div>
+                <input id="input_transladar_x" type="text" class="form-control" >
+              </div>
+            </div>
+            <div>
+              <div class="input-group input-group-sm mb-1">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" style="background-color: yellow; color: black;" id="inputGroup-sizing-sm">y</span>
+                  </div>
+                  <input  id="input_transladar_y" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+              </div>
+            </div>
+            <div>
+              <div class="input-group input-group-sm mb-1">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" style="background-color: blue; color: white;" id="inputGroup-sizing-sm">z</span>
+                  </div>
+                  <input id="input_transladar_z" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-success btn-sm btn-update" onclick="transladar()"><i class="fa fa-refresh"></i></button>
+            </div>
+            <div>
+                <button type="button" class="btn btn-success btn-sm btn-update" onclick="centralizarObjeto()">origem</button>
+            </div>
           </div>
-          <div>
-            <span id="d0_d1_d"></span>
+          <strong>Dispositivo</strong>
+          <div class="ponto-vista-inputs">
+            <div>
+              <div class="input-group input-group-sm mb-1">
+                <div class="input-group-prepend ">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">resH</span>
+                </div>
+                <input id="dispositivoH" type="text" class="form-control" >
+              </div>
+            </div>
+            <div>
+              <div class="input-group input-group-sm mb-1">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">resV</span>
+                  </div>
+                  <input  id="dispositivoV" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+              </div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-success btn-sm btn-update" onclick="atualizarDispositivo()"><i class="fa fa-refresh"></i></button>
+            </div>
           </div>
+          
           <div>
-            <button type="button" class="btn btn-info btn-sm btn-update" onclick="mostrarMatriz('matriz_perspectiva')">Matriz Perspectiva</button>
-          </div>
-          <div>
-            <button type="button" class="btn btn-info btn-sm btn-update" onclick="mostrarMatriz('matriz_projecao')">Matriz Projeção</button>
-          </div>
-          <div>
-            <button type="button" class="btn btn-info btn-sm btn-update" onclick="mostrarMatriz('matriz_homogenea')">Matriz Homogenea</button>
-          </div>
-          <div>
-            <button type="button" class="btn btn-info btn-sm btn-update" onclick="mostrarMatriz('matriz_cartesiana')">Matriz Cartesiana</button>
-          </div>
-          <div>
-            <button type="button" class="btn btn-info btn-sm btn-update" onclick="mostrarMatriz('matriz_janela_viewport')">Matriz Janela Viewport</button>
-          </div>
-          <div>
-            <button type="button" class="btn btn-info btn-sm btn-update" onclick="mostrarMatriz('matriz_dispositivo_truncadas')">Matriz Dipositivo Truncadas</button>
+          <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01"><strong>Matriz</strong></label>
+              </div>
+              <select onChange="mostrarMatriz(this)"class="custom-select" id="inputGroupSelect01">
+                <option selected>Escolha...</option>
+                <option value="matriz_perspectiva">Perpesctiva</option>
+                <option value="matriz_projecao">Projeção</option>
+                <option value="matriz_homogenea">Homogênea</option>
+                <option value="matriz_cartesiana">Cartesiana</option>
+                <option value="matriz_janela_viewport">Janela ViewPort</option>
+                <option value="matriz_dispositivo_truncadas">Coordenadas Dispositivo Truncadas</option>
+              </select>
+            </div>
           </div>
       </div>
       <!-- PLANO DE PROJECAO -->
-      <div id="plano_projecao" class=" plano_projecao">
+      <div id="plano_projecao" class="plano_projecao">
           <table class="table table-bordered table-dark">
             <thead>
               <tr>
                 <th colspan="5" style="text-align: center;">Plano de Projecão</th>
               </tr>
               <tr>
-                <th onclick="atualizarPlanoProjecao()"><i class="fa fa-refresh"></i></th>
+                <th onclick="atualizarPlanoProjecao()"><i style="color:green;" class="fa fa-refresh"></i></th>
                 <th>X</th>
                 <th>Y</th>
                 <th>Z</th>
@@ -130,7 +185,7 @@
                 <th colspan="9" style="text-align: center;">Coordenadas dos vértices do objeto</th>
               </tr>
               <tr>
-                <th onclick="atualizarVerticesObjeto()"><i class="fa fa-refresh"></i></th>
+                <th onclick="atualizarVerticesObjeto()"><i style="color:green;" class="fa fa-refresh"></i></th>
                 <th>V0</th>
                 <th>V1</th>
                 <th>V2</th>

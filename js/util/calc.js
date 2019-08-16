@@ -249,7 +249,7 @@ function calc_coords_dispositivo_truncadas(){
 }
 
 //Inicializa as variaveis
-ponto_vista = get_ponto_vista(0, 0, 5);
+ponto_vista = get_ponto_vista(8, 2, 10);
 plano_projecao = get_plano_projecao(
   { x: 0, y: 0, z: 0 }, //r0
   { x: 1, y: 0, z: 0 }, //p1

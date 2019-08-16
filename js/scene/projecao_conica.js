@@ -25,7 +25,7 @@ function main() {
   const near = 5; // distância mínima da câmera chegar no objeto
   const far = 100; //distância máxima da câmera
   camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.set(0, 0, 20); // seta a posição da camera na tela
+  camera.position.set(8, 2, 10); // seta a posição da camera na tela
 
   cameraHelper = new THREE.CameraHelper(camera);
 
@@ -64,6 +64,7 @@ function main() {
   controls = new THREE.OrbitControls(camera, view1Elem);
   controls.target.set(0, 0, 0);
   controls.update();
+
 
   //Camera da segunda camera
   const camera2 = new THREE.PerspectiveCamera(
@@ -130,33 +131,17 @@ function main() {
     geometry.faces[ 8].color = geometry.faces[ 9].color = new THREE.Color('blue');
     geometry.faces[10].color = geometry.faces[11].color = new THREE.Color('magenta');
       
-    //tamanho do cubo
-    const cubeSize = 4;
-    //Cria um objeto geométrico do cubo (largura, altura, profundidade)
-    //const cubeGeo = new THREE.BoxBufferGeometry(cubeSize, cubeSize, cubeSize);
-    //Material utilizado nos no objeto
-    //const material = new THREE.MeshBasicMaterial({ color: "#2F4F4F"})
-    //const cubeMat = new THREE.MeshPhongMaterial({ color: "#8AC" });
-    //const mesh = new THREE.Mesh(cubeGeo, cubeMat);
+  
     const material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors});
-    //geometry = new THREE.BoxGeometry( cubeSize, cubeSize, cubeSize );
     geometry.verticesNeedUpdate = true;
     mesh_cubo = new THREE.Mesh(geometry, material);
     mesh_cubo.position.set(0, 0, 0);
-    THREE.GeometryUtils.center( geometry );
+    mesh_cubo.material.side = THREE.BackSide;
 
-    //helper = new THREE.FaceNormalsHelper(mesh_cubo, 1, 0x00ff00, 2);
-    //mesh.position.set(cubeSize + 4, cubeSize/2 , 0);
-    //vhn = new THREE.VertexNormalsHelper( mesh_cubo, 1, 0x0000FF	 );
-    
+    var axesHelper = new THREE.AxesHelper( 5 );
+    scene.add( axesHelper );
     scene.add(mesh_cubo);
-    //scene.add(helper);
-    //scene.add(vhn);
 
-
-    
-
-    //scene.add(mesh2);
   }
   //Adicionando luz na cena
   {
@@ -295,6 +280,14 @@ function atualizarPontoDeVista(){
 
 }
 
+function atualizarDispositivo(){
+  Umax = document.getElementById("dispositivoH").value;
+  Vmax = document.getElementById("dispositivoV").value;
+
+  calcularMatrizes();
+  updateTodosDados();
+}
+
 function atualizarPlanoProjecao(){
   //PEGA VALORES PARA R0
   let r0_x = document.getElementById("r0_x").innerHTML;
@@ -407,7 +400,17 @@ function atualizarVerticesObjeto() {
 }
 
 function centralizarObjeto(){
-  THREE.GeometryUtils.center( geometry );
+ // THREE.GeometryUtils.center( geometry );
+  mesh_cubo.position.set(0, 0, 0);
+}
+
+function transladar(){
+
+  let position_x = document.getElementById("input_transladar_x").value;
+  let position_y = document.getElementById("input_transladar_y").value;
+  let position_z = document.getElementById("input_transladar_z").value;
+
+  mesh_cubo.position.set(position_x, position_y, position_z);
 }
 
 
@@ -491,7 +494,6 @@ function updateMatrizPerspectiva(){
 }
 
 function updateMatrizProjecao(){
-  //LINHA -5 0 0 0 -5 0 0 0 
   document.getElementById("matrizProjecao[0][0]").innerHTML = matriz_projecao[0][0].toFixed(2);
   document.getElementById("matrizProjecao[0][1]").innerHTML = matriz_projecao[0][1].toFixed(2);
   document.getElementById("matrizProjecao[0][2]").innerHTML = matriz_projecao[0][2].toFixed(2);
@@ -614,7 +616,6 @@ function updateMatrizJanelaViewport(){
 }
 
 function updateMatrizDispositivoTruncadas(){
-
   document.getElementById("matrizDispositivoTruncadas[0][0]").innerHTML = matriz_coords_dispositivo_truncadas[0][0].toFixed(0);
   document.getElementById("matrizDispositivoTruncadas[0][1]").innerHTML = matriz_coords_dispositivo_truncadas[0][1].toFixed(0);
   document.getElementById("matrizDispositivoTruncadas[0][2]").innerHTML = matriz_coords_dispositivo_truncadas[0][2].toFixed(0);
@@ -643,15 +644,13 @@ function updateMatrizDispositivoTruncadas(){
 
 
 function mostrarMatriz(matriz){
-  console.log(matriz)
   const matrizes = document.querySelectorAll('.matriz');
   matrizes.forEach(matriz => {
-    console.log(matriz);
     matriz.setAttribute("style", "display:none");
   });
 
-  document.getElementById(matriz).removeAttribute("style");
-  document.getElementById(matriz).setAttribute("style", "display:flex");
+  document.getElementById(matriz.value).removeAttribute("style");
+  document.getElementById(matriz.value).setAttribute("style", "display:flex");
 }
 
 main();
