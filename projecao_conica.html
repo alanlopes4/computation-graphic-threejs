@@ -92,7 +92,6 @@
                 <button type="button" class="btn btn-success btn-sm btn-update" onclick="centralizarObjeto()">origem</button>
             </div>
           </div>
-          <strong>Dispositivo</strong>
           <div class="ponto-vista-inputs">
             <div>
               <div class="input-group input-group-sm mb-1">
@@ -114,7 +113,48 @@
                 <button type="button" class="btn btn-success btn-sm btn-update" onclick="atualizarDispositivo()"><i class="fa fa-refresh"></i></button>
             </div>
           </div>
-          
+          <div class="ponto-vista-inputs">
+              <div>
+                <div class="input-group input-group-sm mb-1">
+                  <div class="input-group-prepend ">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Xmin</span>
+                  </div>
+                  <input id="xmin" type="text" class="form-control" >
+                </div>
+              </div>
+              <div>
+                <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-sm">Xmax</span>
+                    </div>
+                    <input  id="xmax" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+              </div>
+              <div>
+                  <button type="button" class="btn btn-success btn-sm btn-update" onclick="atualizarXminXmax()"><i class="fa fa-refresh"></i></button>
+              </div>
+            </div>
+            <div class="ponto-vista-inputs">
+                <div>
+                  <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-prepend ">
+                      <span class="input-group-text" id="inputGroup-sizing-sm">Ymin</span>
+                    </div>
+                    <input id="ymin" type="text" class="form-control" >
+                  </div>
+                </div>
+                <div>
+                  <div class="input-group input-group-sm mb-1">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Ymax</span>
+                      </div>
+                      <input  id="ymax" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                  </div>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-success btn-sm btn-update" onclick="atualizarYminYmax()"><i class="fa fa-refresh"></i></button>
+                </div>
+              </div>
           <div>
           <div class="input-group mb-3 ">
               <div class="input-group-prepend">

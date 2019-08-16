@@ -305,7 +305,7 @@ function calcularMatrizes() {
   matriz_cartesiana = calc_matriz_cartesiana(copyMatrizHomogenea);
 
   console.log("MATRIZ_CARTESIANA", matriz_cartesiana);
-  calc_janela(matriz_cartesiana);
+  //calc_janela(matriz_cartesiana);
   matriz_janela_viewport = calc_tjanela_viewport();
   //transladaOrigemMundo(dados_objeto, matriz_cartesiana);
   console.log("MATRIZ_CARTESIANA2", matriz_cartesiana);
