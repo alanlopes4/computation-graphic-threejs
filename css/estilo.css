@@ -51,7 +51,12 @@ body {
 }
 
 
-
+.plano_projecao{
+  margin-left: 10px;
+}
+.coords_vertices_objeto{
+  margin-left: 10px;
+}
 
 .btn-update{
   margin-left: 5px;

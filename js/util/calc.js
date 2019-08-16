@@ -248,9 +248,17 @@ function calc_coords_dispositivo_truncadas(){
   return matriz_dispositivo_truncadas;
 }
 
+//Inicializa as variaveis
 ponto_vista = get_ponto_vista(0, 0, 5);
+plano_projecao = get_plano_projecao(
+  { x: 0, y: 0, z: 0 }, //r0
+  { x: 1, y: 0, z: 0 }, //p1
+  { x: 0, y: 0, z: 0 }, //p2
+  { x: 0, y: 1, z: 0 } //p3
+);
 
-function test() {
+
+function calcularMatrizes() {
 
   dados_objeto = get_dados_objeto(
     [
@@ -263,12 +271,7 @@ function test() {
   );
 
   
-  plano_projecao = get_plano_projecao(
-    { x: 0, y: 0, z: 0 }, //r0
-    { x: 1, y: 0, z: 0 }, //p1
-    { x: 0, y: 0, z: 0 }, //p2
-    { x: 0, y: 1, z: 0 } //p3
-  );
+ 
 
   normal = calc_vet_normal(plano_projecao);
   d0 = calc_d0(normal, plano_projecao);
@@ -310,7 +313,7 @@ function test() {
   matriz_coords_dispositivo_truncadas = calc_coords_dispositivo_truncadas();
 }
 
-test();
+calcularMatrizes();
 
 function coords_vertice_cubo() {
   let cubo = [];
