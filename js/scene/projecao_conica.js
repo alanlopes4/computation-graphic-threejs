@@ -432,18 +432,18 @@ function atualizarYminYmax(){
 }
 
 function centralizarObjeto(){
- // THREE.GeometryUtils.center( geometry );
-  mesh_cubo.position.set(0, 0, 0);
- 
-  let cubo = coords_vertice_cubo();
+ //THREE.GeometryUtils.center(mesh_cubo);
+ let distance_x = -geometry.vertices[0].x;
+ let distance_y = -geometry.vertices[0].y;
+ let distance_z = -geometry.vertices[0].z; 
 
-  for(let j = 0; j < 8; j++){
-    dados_objeto.coordenadas_vertice[0][j] = cubo[j].x;
-    dados_objeto.coordenadas_vertice[1][j] = cubo[j].y;
-    dados_objeto.coordenadas_vertice[2][j] = cubo[j].z;
-  }
+  mesh_cubo.translateX(distance_x);
+  mesh_cubo.translateY(distance_y);
+  mesh_cubo.translateZ(distance_z);
 
-  updateVerticesObjeto();
+  updateCoordenadasDosVerticesObjeto(distance_x, distance_y, distance_z);
+
+   
 }
 
 function transladar(){
@@ -453,9 +453,9 @@ function transladar(){
   let position_z = document.getElementById("input_transladar_z").value;
 
   //mesh_cubo.position.set(position_x, position_y, position_z);
-  mesh_cubo.translateX(position_x);
-  mesh_cubo.translateY(position_y);
-  mesh_cubo.translateZ(position_z);
+  mesh_cubo.translateX(parseFloat(position_x));
+  mesh_cubo.translateY(parseFloat(position_y));
+  mesh_cubo.translateZ(parseFloat(position_z));
   updateCoordenadasDosVerticesObjeto(position_x, position_y, position_z);
 }
 
@@ -469,6 +469,8 @@ function updateCoordenadasDosVerticesObjeto(x, y, z){
     }
 
     updateVerticesObjeto();
+    atualizarVerticesObjeto();
+
 
 }
 
