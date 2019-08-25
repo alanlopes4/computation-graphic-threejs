@@ -320,37 +320,40 @@ function atualizarPlanoProjecao(){
 function atualizarVerticesObjeto() {
   let vertices = [[], [], []];
 
-  vertices[0][0] = document.getElementById("verticeX[0]").innerHTML;
-  vertices[0][1] = document.getElementById("verticeX[1]").innerHTML;
-  vertices[0][2] = document.getElementById("verticeX[2]").innerHTML;
-  vertices[0][3] = document.getElementById("verticeX[3]").innerHTML;
-  vertices[0][4] = document.getElementById("verticeX[4]").innerHTML;
-  vertices[0][5] = document.getElementById("verticeX[5]").innerHTML;
-  vertices[0][6] = document.getElementById("verticeX[6]").innerHTML;
-  vertices[0][7] = document.getElementById("verticeX[7]").innerHTML;
-  vertices[1][0] = document.getElementById("verticeY[0]").innerHTML;
-  vertices[1][1] = document.getElementById("verticeY[1]").innerHTML;
-  vertices[1][2] = document.getElementById("verticeY[2]").innerHTML;
-  vertices[1][3] = document.getElementById("verticeY[3]").innerHTML;
-  vertices[1][4] = document.getElementById("verticeY[4]").innerHTML;
-  vertices[1][5] = document.getElementById("verticeY[5]").innerHTML;
-  vertices[1][6] = document.getElementById("verticeY[6]").innerHTML;
-  vertices[1][7] = document.getElementById("verticeY[7]").innerHTML;
-  vertices[2][0] = document.getElementById("verticeZ[0]").innerHTML;
-  vertices[2][1] = document.getElementById("verticeZ[1]").innerHTML;
-  vertices[2][2] = document.getElementById("verticeZ[2]").innerHTML;
-  vertices[2][3] = document.getElementById("verticeZ[3]").innerHTML;
-  vertices[2][4] = document.getElementById("verticeZ[4]").innerHTML;
-  vertices[2][5] = document.getElementById("verticeZ[5]").innerHTML;
-  vertices[2][6] = document.getElementById("verticeZ[6]").innerHTML;
-  vertices[2][7] = document.getElementById("verticeZ[7]").innerHTML;
+  vertices[0][0] = parseFloat(document.getElementById("verticeX[0]").innerHTML);
+  vertices[0][1] = parseFloat(document.getElementById("verticeX[1]").innerHTML);
+  vertices[0][2] = parseFloat(document.getElementById("verticeX[2]").innerHTML);
+  vertices[0][3] = parseFloat(document.getElementById("verticeX[3]").innerHTML);
+  vertices[0][4] = parseFloat(document.getElementById("verticeX[4]").innerHTML);
+  vertices[0][5] = parseFloat(document.getElementById("verticeX[5]").innerHTML);
+  vertices[0][6] = parseFloat(document.getElementById("verticeX[6]").innerHTML);
+  vertices[0][7] = parseFloat(document.getElementById("verticeX[7]").innerHTML);
+  vertices[1][0] = parseFloat(document.getElementById("verticeY[0]").innerHTML);
+  vertices[1][1] = parseFloat(document.getElementById("verticeY[1]").innerHTML);
+  vertices[1][2] = parseFloat(document.getElementById("verticeY[2]").innerHTML);
+  vertices[1][3] = parseFloat(document.getElementById("verticeY[3]").innerHTML);
+  vertices[1][4] = parseFloat(document.getElementById("verticeY[4]").innerHTML);
+  vertices[1][5] = parseFloat(document.getElementById("verticeY[5]").innerHTML);
+  vertices[1][6] = parseFloat(document.getElementById("verticeY[6]").innerHTML);
+  vertices[1][7] = parseFloat(document.getElementById("verticeY[7]").innerHTML);
+  vertices[2][0] = parseFloat(document.getElementById("verticeZ[0]").innerHTML);
+  vertices[2][1] = parseFloat(document.getElementById("verticeZ[1]").innerHTML);
+  vertices[2][2] = parseFloat(document.getElementById("verticeZ[2]").innerHTML);
+  vertices[2][3] = parseFloat(document.getElementById("verticeZ[3]").innerHTML);
+  vertices[2][4] = parseFloat(document.getElementById("verticeZ[4]").innerHTML);
+  vertices[2][5] = parseFloat(document.getElementById("verticeZ[5]").innerHTML);
+  vertices[2][6] = parseFloat(document.getElementById("verticeZ[6]").innerHTML);
+  vertices[2][7] = parseFloat(document.getElementById("verticeZ[7]").innerHTML);
  
+  correcao_posicao_apos_atualizarVerticesObjeto(vertices);
+
+
   for(let i = 0; i < 3; i++)
     for(let j = 0; j< 8; j++)
       dados_objeto.coordenadas_vertice[i][j] = vertices[i][j];
 
 
-      geometry.vertices.push(
+     /* geometry.vertices.push(
         new THREE.Vector3(0, 0,  0),  // 0
         new THREE.Vector3(1, 0,  0),  // 1
         new THREE.Vector3(0, 1,  0),  // 2
@@ -359,7 +362,7 @@ function atualizarVerticesObjeto() {
         new THREE.Vector3(1, 0,  1),  // 5
         new THREE.Vector3(0, 1,  1),  // 6
         new THREE.Vector3(1, 1,  1),  // 7
-      );
+      );*/
 
       //ATUALIZANDO VERTICES DO CUBO
       geometry.vertices[0].x = parseFloat(dados_objeto.coordenadas_vertice[0][0]);
@@ -395,7 +398,21 @@ function atualizarVerticesObjeto() {
       geometry.vertices[7].z = parseFloat(dados_objeto.coordenadas_vertice[2][5]);
   
 
-  geometry.verticesNeedUpdate = true;
+      geometry.verticesNeedUpdate = true;
+}
+
+function correcao_posicao_apos_atualizarVerticesObjeto(vertices){
+  let correcao_x = 0, correcao_y = 0, correcao_z = 0;
+  for(let i = 0; i < 3; i++)
+    for(let j = 0; j< 8; j++)
+      if(dados_objeto.coordenadas_vertice[i][j] !== vertices[i][j]){
+        if(i == 0) correcao_x = vertices[i][j] - dados_objeto.coordenadas_vertice[i][j] ;
+        else if(i == 1) correcao_y = vertices[i][j] - dados_objeto.coordenadas_vertice[i][j];
+        else correcao_z = vertices[i][j] -  dados_objeto.coordenadas_vertice[i][j];
+      }
+      if(correcao_x < 0) mesh_cubo.translateX(correcao_x);
+      if(correcao_y < 0) mesh_cubo.translateY(correcao_y);
+      if(correcao_z < 0) mesh_cubo.translateZ(correcao_z);
 }
 
 function atualizarXminXmax(){
@@ -417,6 +434,16 @@ function atualizarYminYmax(){
 function centralizarObjeto(){
  // THREE.GeometryUtils.center( geometry );
   mesh_cubo.position.set(0, 0, 0);
+ 
+  let cubo = coords_vertice_cubo();
+
+  for(let j = 0; j < 8; j++){
+    dados_objeto.coordenadas_vertice[0][j] = cubo[j].x;
+    dados_objeto.coordenadas_vertice[1][j] = cubo[j].y;
+    dados_objeto.coordenadas_vertice[2][j] = cubo[j].z;
+  }
+
+  updateVerticesObjeto();
 }
 
 function transladar(){
@@ -425,9 +452,25 @@ function transladar(){
   let position_y = document.getElementById("input_transladar_y").value;
   let position_z = document.getElementById("input_transladar_z").value;
 
-  mesh_cubo.position.set(position_x, position_y, position_z);
+  //mesh_cubo.position.set(position_x, position_y, position_z);
+  mesh_cubo.translateX(position_x);
+  mesh_cubo.translateY(position_y);
+  mesh_cubo.translateZ(position_z);
+  updateCoordenadasDosVerticesObjeto(position_x, position_y, position_z);
 }
 
+
+function updateCoordenadasDosVerticesObjeto(x, y, z){
+
+    for(let j = 0; j < 8; j++){
+      dados_objeto.coordenadas_vertice[0][j] = parseFloat(dados_objeto.coordenadas_vertice[0][j]) + parseFloat(x);
+      dados_objeto.coordenadas_vertice[1][j] = parseFloat(dados_objeto.coordenadas_vertice[1][j]) + parseFloat(y);
+      dados_objeto.coordenadas_vertice[2][j] = parseFloat(dados_objeto.coordenadas_vertice[2][j]) + parseFloat(z);
+    }
+
+    updateVerticesObjeto();
+
+}
 
 function updateNormal(){
   document.getElementById("normal").innerHTML = ` x: ${normal.nx} y: ${normal.ny} z: ${normal.nz}`;
@@ -659,13 +702,17 @@ function updateMatrizDispositivoTruncadas(){
 
 
 function mostrarMatriz(matriz){
-  const matrizes = document.querySelectorAll('.matriz');
+  $('#modal_'+matriz.value.toString()).modal('show');
+
+  /*const matrizes = document.querySelectorAll('.matriz');
   matrizes.forEach(matriz => {
     matriz.setAttribute("style", "display:none");
   });
 
   document.getElementById(matriz.value).removeAttribute("style");
-  document.getElementById(matriz.value).setAttribute("style", "display:flex");
+  document.getElementById(matriz.value).setAttribute("style", "display:flex");*/
+ 
+  //$('#modal_'+matriz.value).modal('show');
 }
 
 main();

@@ -256,20 +256,21 @@ plano_projecao = get_plano_projecao(
   { x: 0, y: 0, z: 0 }, //p2
   { x: 0, y: 1, z: 0 } //p3
 );
+dados_objeto = get_dados_objeto(
+  [
+    [0, 1, 1, 0, 0, 1, 1, 0],
+    [0, 0, 0, 0, 1, 1, 1, 1],
+    [0, 0, 1, 1, 1, 1, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1]
+  ],
+  8
+);
 
 
 function calcularMatrizes() {
 
-  dados_objeto = get_dados_objeto(
-    [
-      [0, 1, 1, 0, 0, 1, 1, 0],
-      [0, 0, 0, 0, 1, 1, 1, 1],
-      [0, 0, 1, 1, 1, 1, 0, 0],
-      [1, 1, 1, 1, 1, 1, 1, 1]
-    ],
-    8
-  );
-
+  
+  console.log("DADOS OBJETO", dados_objeto)
   
  
 
@@ -305,7 +306,8 @@ function calcularMatrizes() {
   matriz_cartesiana = calc_matriz_cartesiana(copyMatrizHomogenea);
 
   console.log("MATRIZ_CARTESIANA", matriz_cartesiana);
-  //calc_janela(matriz_cartesiana);
+  
+  calc_janela(matriz_cartesiana);
   matriz_janela_viewport = calc_tjanela_viewport();
   //transladaOrigemMundo(dados_objeto, matriz_cartesiana);
   console.log("MATRIZ_CARTESIANA2", matriz_cartesiana);
