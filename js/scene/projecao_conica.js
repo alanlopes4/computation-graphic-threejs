@@ -448,15 +448,43 @@ function centralizarObjeto(){
 
 function transladar(){
 
-  let position_x = document.getElementById("input_transladar_x").value;
-  let position_y = document.getElementById("input_transladar_y").value;
-  let position_z = document.getElementById("input_transladar_z").value;
+  let position_x = document.getElementById("input_transladar_x").value || 0;
+  let position_y = document.getElementById("input_transladar_y").value || 0;
+  let position_z = document.getElementById("input_transladar_z").value || 0;
 
   //mesh_cubo.position.set(position_x, position_y, position_z);
   mesh_cubo.translateX(parseFloat(position_x));
   mesh_cubo.translateY(parseFloat(position_y));
   mesh_cubo.translateZ(parseFloat(position_z));
   updateCoordenadasDosVerticesObjeto(position_x, position_y, position_z);
+}
+
+function rotacionar(){
+
+  let rotacionar_x = document.getElementById("input_rotacionar_x").value || 0;
+  let rotacionar_y = document.getElementById("input_rotacionar_y").value || 0;
+  let rotacionar_z = document.getElementById("input_rotacionar_z").value || 0;
+
+  //mesh_cubo.rotacionar.set(rotacionar_x, rotacionar_y, rotacionar_z);
+  mesh_cubo.rotateX(parseFloat(rotacionar_x));
+  mesh_cubo.rotateY(parseFloat(rotacionar_y));
+  mesh_cubo.rotateZ(parseFloat(rotacionar_z));
+  //updateCoordenadasDosVerticesObjeto(rotacionar_x, rotacionar_y, rotacionar_z);
+
+
+}
+
+function centralizarRotacao(){
+  //THREE.GeometryUtils.center(mesh_cubo);
+  let rotate_x = -mesh_cubo.rotation.x;
+  let rotate_y = -mesh_cubo.rotation.y;
+  let rotate_z = -mesh_cubo.rotation.z; 
+
+  mesh_cubo.rotateX(rotate_x);
+  mesh_cubo.rotateY(rotate_y);
+  mesh_cubo.rotateZ(rotate_z);
+
+    //updateCoordenadasDosVerticesObjeto(rotate_x, rotate_y, rotate_z);
 }
 
 

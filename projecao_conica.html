@@ -92,6 +92,49 @@
                 <button type="button" class="btn btn-success btn-sm btn-update" onclick="centralizarObjeto()">origem</button>
             </div>
           </div>
+          <div>
+            <strong>Rotacionar: </strong>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rotacionar_options_radio" id="radio_rotacionar_origem" value="origem">
+                <label class="form-check-label" for="radio_rotacionar_origem">origem</label>
+              </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rotacionar_options_radio" id="radio_rotacionar_eixo" value="eixo">
+                <label class="form-check-label" for="radio_rotacionar_eixo">eixo</label>
+            </div>
+          </div>
+          <div class="ponto-vista-inputs">
+            <div>
+              <div class="input-group input-group-sm mb-1">
+                <div class="input-group-prepend ">
+                  <span class="input-group-text" style="background-color: red; color: white;" id="inputGroup-sizing-sm">x</span>
+                </div>
+                <input id="input_rotacionar_x" type="number" class="form-control" >
+              </div>
+            </div>
+            <div>
+              <div class="input-group input-group-sm mb-1">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" style="background-color: yellow; color: black;" id="inputGroup-sizing-sm">y</span>
+                  </div>
+                  <input  id="input_rotacionar_y" type="number" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+              </div>
+            </div>
+            <div>
+              <div class="input-group input-group-sm mb-1">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" style="background-color: blue; color: white;" id="inputGroup-sizing-sm">z</span>
+                  </div>
+                  <input id="input_rotacionar_z" type="number" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-success btn-sm btn-update" onclick="rotacionar()"><i class="fa fa-refresh"></i></button>
+            </div>
+            <div>
+                <button type="button" class="btn btn-success btn-sm btn-update" onclick="centralizarRotacao()">origem</button>
+            </div>
+          </div>
           <div class="ponto-vista-inputs">
             <div>
               <div class="input-group input-group-sm mb-1">
