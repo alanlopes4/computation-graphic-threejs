@@ -37,20 +37,20 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: start;
-  width:300px;
-  min-width:300px;
+  width:400px;
+  min-width:400px;
 }
 .ponto-vista-inputs{
   display: flex;
   flex-direction: row;
   justify-content: start;
-  max-width: 300px;
+  max-width: 400px;
 }
 
 .custom-select{
   display: flex;
   justify-content: start;
-  max-width: 300px;
+  max-width: 400px;
 }
 
 tr {
